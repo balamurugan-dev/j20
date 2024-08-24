@@ -10,12 +10,12 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:j20.convertFromClipboard",
-		"onCommand:j20.convertFromClipboardToFile"
 		
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "customEditors": [
+    ],
     "menus": {
 			"explorer/context": [
 				{
