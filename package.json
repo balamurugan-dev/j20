@@ -40,15 +40,19 @@
     "commands": [
       {
         "command": "j20.helloWorld",
-        "title": "Hello World"
+        "title": "Json To dart",
+        "category": "J20"
+        
       },
       {
         "command": "j20.convertFromClipboardToFolder",
-        "title": "Convert From Folder"
+        "title": "Convert From Folder",
+        "category": "J20"
       },
       {
         "command": "j20.convertFromClipboardToFile",
-        "title": "Convert From File"
+        "title": "Convert From File",
+        "category": "J20"
       }
     ]
   },
