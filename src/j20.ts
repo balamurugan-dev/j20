@@ -197,7 +197,7 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
         return `(e) => e.toJson()`;
     };
 
-    addFromJsonCode(key: String, typeObj: TypeObj, fromJsonCode: Array<String>) {
+     addFromJsonCode(key: String, typeObj: TypeObj, fromJsonCode: Array<String>) {
         const type = typeObj.type;
         const paramName = `${camelcase(key)}`;
         let indentTab = 2;
