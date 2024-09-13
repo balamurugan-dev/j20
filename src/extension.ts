@@ -40,7 +40,7 @@ export async function activate(context: vscode.ExtensionContext) {
                             vscode.window.showErrorMessage("Please enter or past your json");
                             return;
                         }
-                       var finalCode = await convertToDart(undefined, undefined, e.text);
+                       var finalCode = await convertToDart(undefined, undefined, e.text,e.object,e.className);
                         currentPanel!.webview.postMessage({ command: 'j20' ,code :finalCode! });
 
                         break;
@@ -93,7 +93,7 @@ export async function activate(context: vscode.ExtensionContext) {
                             vscode.window.showErrorMessage("Please enter or past your json");
                             return;
                         }
-                       var finalCode = await convertToDart(undefined, undefined, e.text ,e.object);
+                       var finalCode = await convertToDart(undefined, undefined, e.text ,e.object,e.className);
                         currentPanel!.webview.postMessage({ command: 'j20' ,code :finalCode! });
 
                         break;
@@ -163,7 +163,7 @@ interface options{
             freezed: boolean
 }
 
-async function convertToDart(folder?: string, file?: string, json?: any ,object?:options) {
+async function convertToDart(folder?: string, file?: string, json?: any ,object?:options ,className?:string) {
     const jsonToDartConfig = new JsonToDartConfig();
 
     // console.log(`------jsontodartconfig.typechecking : ${jsonToDartConfig.typeChecking}---------`);
@@ -207,7 +207,7 @@ async function convertToDart(folder?: string, file?: string, json?: any ,object?
         converter.setIncludeCopyWithMethod(copyWithMethod);
         converter.setMergeArrayApproach(mergeArrayApproach);
         converter.setUseNum(useNum);
-        const code = converter.parse("Json", obj).map(r => r.code).join("\n");
+        const code = converter.parse(className ? className :"Json", obj).map(r => r.code).join("\n");
         return code;
         // console.log(`------after convertion : code : ${code} ,filepath : ${filePath}---------`);
 

@@ -33,8 +33,10 @@ window.addEventListener('DOMContentLoaded', () => {
     var convert = document.getElementById('convert-btn')
     var inputText = document.getElementById('input-text')
     var outputText = document.getElementById('output-text')
+    var className = document.getElementById("class-name-input")
     convert.addEventListener('click', function () {
         console.log(inputText.value)
+        console.log(className.value)
         var options = {
             nullSafety: document.getElementById('null-safety').checked,
             typesonly: document.getElementById('types-only').checked,
@@ -47,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
             freezed: document.getElementById('freezed').checked
         }
         if (inputText.value) {
-            vscode.postMessage({ command: 'j20', text: inputText.value ,object:options})
+            vscode.postMessage({ command: 'j20', text: inputText.value ,object:options,className:className.value})
         }
         console.log(outputText.textContent)
         // outputText.textContent = inputText.value
@@ -69,8 +71,11 @@ window.addEventListener('DOMContentLoaded', () => {
     hidebtn.addEventListener('click',function(){
         if (optionsContainer.style.display === 'none') {
             optionsContainer.style.display = 'block';
+            hidebtn.textContent = "Hide Options"
+
           } else {
             optionsContainer.style.display = 'none';
+            hidebtn.textContent = "Show Options"
           }
     })
 

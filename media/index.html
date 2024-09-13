@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>j20</title>
-        <link rel="stylesheet" type="text/css" href="{{styleUri}}">
-    </head>
-    <body>
-    
-        <div id="editor">
-            <header>Json To Dart</header>
-            <textarea id="input-text" placeholder="{Place Your JSON}"></textarea>
-            <button id="convert-btn">Convert</button>
-         
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>j20</title>
+    <link rel="stylesheet" type="text/css" href="{{styleUri}}">
+</head>
+
+<body>
+
+    <div id="editor">
+        <header>Json To Dart</header>
+        <div class="class-name">
+            <p style="color: white; display: inline-block;">Class Name : </p>
+            <input id="class-name-input" type="text" placeholder="Your Class Name.....">
         </div>
-        <div id="code">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p  style="margin: 0;">Dart Class</p>
-                <button id="hide-button">Hide Options</button>
-            </div>
-            <pre id="output-text" style="margin-top: 10px; padding: 10px; overflow: auto;">// Final code will appear here</pre>
-			<div id="options-container">
-                <p>Options:</p>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li><label><input id="null-safety" type="checkbox" checked> Null Safety</label></li>
-                    <li><label><input id="types-only" type="checkbox"> Types only</label></li>
-                    <li><label><input id="type-check" type="checkbox"> Type check</label></li>
-                    <li><label><input id="encoder-decoder" type="checkbox"> Put encoder & decoder in Class</label></li>
-                    <li><label><input id="pro-required" type="checkbox"> Make all properties required</label></li>
-                    <li><label><input id="pro-final" type="checkbox"> Make all properties final</label></li>
-                    <li><label><input id="copywith" type="checkbox"> Generate CopyWith method</label></li>
-                    <li><label><input id="optional" type="checkbox"> Make all properties optional</label></li>
-                    <li><label><input id="freezed" type="checkbox"> Generate Class with @freezed</label></li>
 
-                </ul>
-                <button id="copy-btn" style="margin-top: 10px; padding: 5px 10px;">Copy Code</button>
-                <button onclick="getSelectedOptions()" id="option-btn" style="margin-top: 10px; padding: 5px 10px;">Check Option</button>
+        <textarea id="input-text" placeholder="{Place Your JSON}"></textarea>
+        <button id="convert-btn">Convert</button>
 
-
-            </div>
+    </div>
+    <div id="code">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <p style="margin: 0;">Dart Class</p>
+            <button id="hide-button">Hide Options</button>
         </div>
-        <script src="{{scriptUri}}"></script>
-    </body>
-    </html>
+        <pre id="output-text"
+            style="margin-top: 10px; padding: 10px; overflow: auto;">// Final code will appear here</pre>
+        <div id="options-container">
+            <p>Options:</p>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li><label><input id="null-safety" type="checkbox" checked> Null Safety</label></li>
+                <li><label><input id="types-only" type="checkbox"> Types only</label></li>
+                <li><label><input id="type-check" type="checkbox"> Type check</label></li>
+                <li><label><input id="encoder-decoder" type="checkbox"> Put encoder & decoder in Class</label></li>
+                <li><label><input id="pro-required" type="checkbox"> Make all properties required</label></li>
+                <li><label><input id="pro-final" type="checkbox"> Make all properties final</label></li>
+                <li><label><input id="copywith" type="checkbox"> Generate CopyWith method</label></li>
+                <li><label><input id="optional" type="checkbox"> Make all properties optional</label></li>
+                <li><label><input id="freezed" type="checkbox"> Generate Class with @freezed</label></li>
+
+            </ul>
+            <button id="copy-btn" style="margin-top: 10px; padding: 5px 10px;">Copy Code</button>
+            <button onclick="getSelectedOptions()" id="option-btn" style="margin-top: 10px; padding: 5px 10px;">Check
+                Option</button>
+
+
+        </div>
+    </div>
+    <script src="{{scriptUri}}"></script>
+</body>
+
+</html>
