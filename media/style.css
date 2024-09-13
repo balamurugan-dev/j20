@@ -40,10 +40,13 @@ body {
 #code {
     flex: 1;
     padding: 10px;
-    background-color:  #ffffff;
+    background-color:   #000000;
     overflow: auto;
     box-sizing: border-box;
-    color: black;
+    color: white;
+}
+#output-text{
+    color: white;
 }
 header {
     background-color: #c70e33;
@@ -66,4 +69,10 @@ textarea {
 }
 pre{
     color:black;
+}
+#hide-button{
+    display: inline-block;
+    color: white;
+    background-color: black;
+    padding: 5px;
 }

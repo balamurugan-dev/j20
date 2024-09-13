@@ -149,6 +149,7 @@ async function convertToDart(folder, file, json, object) {
     // }) === "Yes");
     // console.log(`------jsontodartconfig.checknumberasnum : ${jsonToDartConfig.checkNumberAsNum}---------`);
     let useNum = jsonToDartConfig.checkNumberAsNum ?? false;
+    console.log(`------jsontodartconfig.checknumberasnum : ${useNum}---------`);
     try {
         const data = await vscode.env.clipboard.readText();
         // console.log(`------data from clipboard :${data} ---------`);
@@ -157,123 +158,26 @@ async function convertToDart(folder, file, json, object) {
         const nullSafety = object?.nullSafety ?? true;
         // console.log(`------nullsafety :${nullSafety} ---------`);
         const mergeArrayApproach = jsonToDartConfig.mergeArrayApproach ?? false;
-        // console.log(`------mergearray aproach :${mergeArrayApproach} ---------`);
+        console.log(`------mergearray aproach :${mergeArrayApproach} ---------`);
         const copyWithMethod = object?.copywith ?? false;
         console.log(`------copywithmethod :${copyWithMethod} ---------`);
         const nullValueDataType = jsonToDartConfig.nullValueDataType;
-        // console.log(`------nullvaluedatatype :${nullValueDataType} ---------`);
+        console.log(`------nullvaluedatatype :${nullValueDataType} ---------`);
         const { tabSize } = vscode.workspace.getConfiguration("editor", { languageId: "dart" });
-        // console.log(`------tabsize :${tabSize} ---------`);
+        console.log(`------tabsize :${tabSize} ---------`);
         const converter = new j20_1.default(tabSize, typeCheck, nullValueDataType, nullSafety);
-        converter.setIncludeCopyWitMethod(copyWithMethod);
+        converter.setIncludeCopyWithMethod(copyWithMethod);
         converter.setMergeArrayApproach(mergeArrayApproach);
         converter.setUseNum(useNum);
         const code = converter.parse("Json", obj).map(r => r.code).join("\n");
         return code;
         // console.log(`------after convertion : code : ${code} ,filepath : ${filePath}---------`);
         // const file = outputFileSync("", code);
-        vscode.window.showInformationMessage(`Converting done...`);
+        // vscode.window.showInformationMessage(`Converting done...`);
     }
     catch (e) {
         // console.log(`------inside catch function :${e} ---------`);
         vscode.window.showErrorMessage(`${e}`);
     }
-}
-function getWebviewContentfromfile(htmlPath, styleUri) {
-    // Read the HTML file from the disk
-    let html = fs.readFileSync(htmlPath, 'utf8');
-    // Return the HTML content
-    return html;
-}
-function getWebviewContent() {
-    return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>j20</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                font-family: Arial, sans-serif;
-                display: flex;
-                height: 100vh;
-                flex-direction: row;
-            }
-            #editor {
-                flex: 1;
-                background-color: #1e2a38;
-                color: white;
-                position: relative;
-                padding: 10px;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-            }
-            #options-container {
-                position: absolute;
-                top: 50%;
-                right: 10px;
-				transform: translateY(-50%);
-                background-color: #f5f5f5;
-                padding: 10px;
-                border-radius: 5px;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-            }
-            #code {
-                flex: 1;
-                padding: 10px;
-                background-color:  #ffffff;
-                overflow: auto;
-                box-sizing: border-box;
-            }
-            header {
-                background-color: #c70e33;
-                padding: 10px;
-                color: white;
-                font-size: 1.2em;
-            }
-            textarea {
-                flex: 1;
-                width: 100%;
-                background-color: #1e2a38;
-                color: white;
-                border: none;
-                resize: none;
-                padding: 10px;
-                box-sizing: border-box;
-                border-radius: 5px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="editor">
-            <header>Json To Dart</header>
-            <textarea placeholder="{}"></textarea>
-         
-        </div>
-        <div id="code">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p style="margin: 0;">Dart Class</p>
-            </div>
-            <pre style="margin-top: 10px; padding: 10px; overflow: auto;">// Final code will appear here</pre>
-			<div id="options-container">
-                <p>Options:</p>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li><label><input type="checkbox" checked> Null Safety</label></li>
-                    <li><label><input type="checkbox"> Types only</label></li>
-                    <li><label><input type="checkbox"> Put encoder & decoder in Class</label></li>
-                    <li><label><input type="checkbox"> Make all properties required</label></li>
-                    <li><label><input type="checkbox"> Make all properties final</label></li>
-                    <li><label><input type="checkbox"> Generate CopyWith method</label></li>
-                    <li><label><input type="checkbox"> Make all properties optional</label></li>
-                </ul>
-                <button style="margin-top: 10px; padding: 5px 10px;">Copy Code</button>
-            </div>
-        </div>
-    </body>
-    </html>`;
 }
 //# sourceMappingURL=extension.js.map

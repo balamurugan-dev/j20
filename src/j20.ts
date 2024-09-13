@@ -20,10 +20,10 @@ class JsonToDart {
         this.handlerSymbol = nullSafety ? "?" : "";
     }
 
-    setIncludeCopyWitMethod(b: boolean) {
+    setIncludeCopyWithMethod(b: boolean) {
         this.includeCopyWitMethod = b;
     }
-    setIncludeFromListWitMethod(b: boolean) {
+    setIncludeFromListWithMethod(b: boolean) {
         this.includeFromListMethod = b;
     }
     setMergeArrayApproach(b: boolean) {
@@ -75,7 +75,7 @@ class JsonToDart {
             }
         } else if ((typeof value) === "object") {
             typeObj.isObject = true;
-            type = this.toClassName(key);
+            type = this.toClassName(key);  
             this.parse(type, value);
         }
         typeObj.type = type;
@@ -90,17 +90,16 @@ class JsonToDart {
         if (type === "dynamic") { return type; }
         return `${type}${handlerSymbol}`;
     }
-    parse(className: String, json: any): Array<Result> {
+    parse(className: String, json: any): Result[] {
 
         className = this.toClassName(className);
         this.classNames.push(className);
-
-        const parameters: Array<String> = [];
-        const parametersForMethod: Array<String> = [];
-        const fromJsonCode: Array<String> = [];
-        const toJsonCode: Array<String> = [];
-        const constructorInit: Array<String> = [];
-        const copyWithAssign: Array<String> = [];
+        const parameters: String[] = [];
+        const parametersForMethod: String[] = [];
+        const fromJsonCode: String[] = [];
+        const toJsonCode: String[] = [];
+        const constructorInit: String[] = [];
+        const copyWithAssign: String[] = [];
         if (json) {
             if (Array.isArray(json) && json.length > 0) {
                 json = this.mergeArrayApproach ? json.reduce((p, c) => {
@@ -287,10 +286,10 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
     toCondition(count: number, ...text: Array<String>): String {
         return `${this.indent(count)}${text.join(" ")}`;
     }
-}
+} 
 
 
-class TypeObj {
+class  TypeObj {
     type: String = "dynamic";
     defaultValue: String = "''";
     typeRef!: TypeObj;

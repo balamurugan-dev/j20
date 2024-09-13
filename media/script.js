@@ -63,6 +63,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 break;
         }
     });
+    //hide container
+    var hidebtn = document.getElementById("hide-button")
+    var optionsContainer = document.getElementById("options-container")
+    hidebtn.addEventListener('click',function(){
+        if (optionsContainer.style.display === 'none') {
+            optionsContainer.style.display = 'block';
+          } else {
+            optionsContainer.style.display = 'none';
+          }
+    })
 
 });
     //get selected options
@@ -80,3 +90,4 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         console.log(`OPTIONS : ${JSON.stringify(options)}`)
     }
+

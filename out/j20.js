@@ -20,10 +20,10 @@ class JsonToDart {
         this.nullSafety = nullSafety ?? true;
         this.handlerSymbol = nullSafety ? "?" : "";
     }
-    setIncludeCopyWitMethod(b) {
+    setIncludeCopyWithMethod(b) {
         this.includeCopyWitMethod = b;
     }
-    setIncludeFromListWitMethod(b) {
+    setIncludeFromListWithMethod(b) {
         this.includeFromListMethod = b;
     }
     setMergeArrayApproach(b) {
