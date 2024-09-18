@@ -4,6 +4,8 @@ import JsonToDart from './j20';
 import { outputFileSync } from 'fs-extra';
 import * as fs from 'fs';
 import * as path from 'path';
+// import { camelCase } from 'lodash';
+const camelcase = require('camelcase');
 
 
 
@@ -43,7 +45,6 @@ export async function activate(context: vscode.ExtensionContext) {
                        var finalCode = await convertToDart(undefined, undefined, e.text,e.object,e.className);
                         currentPanel!.webview.postMessage({ command: 'j20' ,code :finalCode! });
 
-                        break;
                         break;
                     case 'copycode':
                         vscode.window.showInformationMessage("Code is Copied");
@@ -207,7 +208,29 @@ async function convertToDart(folder?: string, file?: string, json?: any ,object?
         converter.setIncludeCopyWithMethod(copyWithMethod);
         converter.setMergeArrayApproach(mergeArrayApproach);
         converter.setUseNum(useNum);
-        const code = converter.parse(className ? className :"Json", obj).map(r => r.code).join("\n");
+        converter.setRequiredProperty(object?.required ? object.required : false);
+        converter.setFinalProperty(object?.final ? object.final : false);
+        converter.putEnCoderAndDeCoder(object?.encoder ? object.encoder : false);
+        converter.setIncludeFreezedMethod(object?.freezed ? object.freezed : false);
+        converter.setIncludeOptionalMethod(object?.optional ? object.optional : false);
+        converter.setTypesOnlyCode(object?.typesonly ? object.typesonly : false);
+
+        var code = converter.parse(className ? className :"Json", obj).map(r => r.code).join("\n");
+        if(object?.typesonly == false && object?.encoder){
+            code= `import 'dart:convert';\n` + code;
+        }
+        if(object?.typesonly == false && object?.freezed){
+            code = `import 'package:freezed_annotation/freezed_annotation.dart';
+part '${camelcase(className,{pascalCase: true})}.freezed.dart';
+part '${camelcase(className,{pascalCase: true})}.g.dart';\n` + code;
+        }
+//         const packages =
+//         `${object?.encoder ? `import 'dart:convert';\n` : ""}
+// ${object?.freezed ? `
+// import 'package:freezed_annotation/freezed_annotation.dart';
+// part 'welcome.freezed.dart';
+// part 'welcome.g.dart';\n`: ''}
+// `;
         return code;
         // console.log(`------after convertion : code : ${code} ,filepath : ${filePath}---------`);
 
