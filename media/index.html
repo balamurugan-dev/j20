@@ -11,7 +11,6 @@
 <body>
 
     <div id="editor">
-        <header>Json To Dart</header>
         <div class="class-name">
             <p style="color: white; display: inline-block;">Class Name : </p>
             <input id="class-name-input" type="text" placeholder="Your Class Name.....">
@@ -29,9 +28,47 @@
         <pre id="output-text"
             style="margin-top: 10px; padding: 10px; overflow: auto;">// Final code will appear here</pre>
         <div id="options-container">
-            <p>Options:</p>
+            <p style="color: #4CAF50;font-size: 1.3em; font-weight: bold;">Options:</p>
             <ul style="list-style: none; padding: 0; margin: 0;">
-                <li><label><input id="null-safety" type="checkbox" checked> Null Safety</label></li>
+                <li><label class="switch">
+                        <input type="checkbox" id="null-safety" checked>
+                        <span class="slider"></span>
+                    </label> Null Safety</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="types-only">
+                        <span class="slider"></span>
+                    </label> Types Only</li>
+
+                <li><label class="switch">
+                        <input type="checkbox" id="type-check">
+                        <span class="slider"></span>
+                    </label> Type Check</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="encoder-decoder">
+                        <span class="slider"></span>
+                    </label> Put encoder & decoder in Class</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="pro-required">
+                        <span class="slider"></span>
+                    </label> Make all properties required</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="pro-final">
+                        <span class="slider"></span>
+                    </label> Make all properties final</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="copywith">
+                        <span class="slider"></span>
+                    </label> Generate CopyWith method</li>
+                <li><label class="switch">
+                        <input type="checkbox" id="optional">
+                        <span class="slider"></span>
+                    </label> Make all properties optional</li>
+                </label>
+                <li><label class="switch">
+                        <input type="checkbox" id="freezed">
+                        <span class="slider"></span>
+                    </label> Generate Class with @freezed</li>
+                <!-- <li><label><input id="null-safety" type="checkbox" checked> Null Safety</label></li>
                 <li><label><input id="types-only" type="checkbox"> Types only</label></li>
                 <li><label><input id="type-check" type="checkbox"> Type check</label></li>
                 <li><label><input id="encoder-decoder" type="checkbox"> Put encoder & decoder in Class</label></li>
@@ -39,10 +76,10 @@
                 <li><label><input id="pro-final" type="checkbox"> Make all properties final</label></li>
                 <li><label><input id="copywith" type="checkbox"> Generate CopyWith method</label></li>
                 <li><label><input id="optional" type="checkbox"> Make all properties optional</label></li>
-                <li><label><input id="freezed" type="checkbox"> Generate Class with @freezed</label></li>
+                <li><label><input id="freezed" type="checkbox"> Generate Class with @freezed</label></li> -->
 
             </ul>
-            <button id="copy-btn" style="margin-top: 10px; padding: 5px 10px;">Copy Code</button>
+            <button id="copy-btn">Copy Code</button>
 
         </div>
     </div>

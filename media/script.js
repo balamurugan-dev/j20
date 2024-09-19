@@ -53,6 +53,57 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         // outputText.textContent = inputText.value
     })
+    //text Area changes or paste
+    inputText.addEventListener('input',convertCode);
+    inputText.addEventListener('paste',convertCode);
+    //call btn fuction for code change
+
+    document.getElementById("null-safety").addEventListener("change", function() {
+       convertCode();
+    });
+    document.getElementById("types-only").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("type-check").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("encoder-decoder").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("pro-required").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("pro-final").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("copywith").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("optional").addEventListener("change", function() {
+        convertCode();
+     });
+     document.getElementById("freezed").addEventListener("change", function() {
+        convertCode();
+     });
+
+
+        function convertCode() {
+            var options = {
+                nullSafety: document.getElementById('null-safety').checked,
+                typesonly: document.getElementById('types-only').checked,
+                typecheck: document.getElementById('type-check').checked,
+                encoder: document.getElementById('encoder-decoder').checked,
+                required: document.getElementById('pro-required').checked,
+                final: document.getElementById('pro-final').checked,
+                copywith: document.getElementById('copywith').checked,
+                 optional: document.getElementById('optional').checked,
+                freezed: document.getElementById('freezed').checked
+            }
+            if (inputText.value) {
+                vscode.postMessage({ command: 'j20', text: inputText.value ,object:options,className:className.value})
+            }
+        }
+    
     // Handle the message inside the webview
     window.addEventListener('message', event => {
 
@@ -63,6 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 break;
         }
     });
+    
     //hide container
     var hidebtn = document.getElementById("hide-button")
     var optionsContainer = document.getElementById("options-container")
