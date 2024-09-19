@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
             })
         })
             .catch(err => {
-                console.error('Failed to copy: ', err);
+                // console.error('Failed to copy: ', err);
             });
 
     });
@@ -35,8 +35,8 @@ window.addEventListener('DOMContentLoaded', () => {
     var outputText = document.getElementById('output-text')
     var className = document.getElementById("class-name-input")
     convert.addEventListener('click', function () {
-        console.log(inputText.value)
-        console.log(className.value)
+        // console.log(inputText.value)
+        // console.log(className.value)
         var options = {
             nullSafety: document.getElementById('null-safety').checked,
             typesonly: document.getElementById('types-only').checked,
@@ -51,14 +51,12 @@ window.addEventListener('DOMContentLoaded', () => {
         if (inputText.value) {
             vscode.postMessage({ command: 'j20', text: inputText.value ,object:options,className:className.value})
         }
-        console.log(outputText.textContent)
         // outputText.textContent = inputText.value
     })
     // Handle the message inside the webview
     window.addEventListener('message', event => {
 
         const message = event.data; // The JSON data our extension sent
-        console.log(message)
         switch (message.command) {
             case 'j20':
                 outputText.textContent = message.code
@@ -93,6 +91,5 @@ window.addEventListener('DOMContentLoaded', () => {
              optional: document.getElementById('optional').checked,
             freezed: document.getElementById('freezed').checked
         }
-        console.log(`OPTIONS : ${JSON.stringify(options)}`)
     }
 

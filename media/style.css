@@ -6,6 +6,7 @@ body {
     height: 100vh;
     flex-direction: row;
 }
+
 header {
     background-color: #c70e33;
     padding: 10px;
@@ -14,6 +15,7 @@ header {
     position: relative;
     text-align: center;
 }
+
 #editor {
     flex: 1;
     background-color: #1e2a38;
@@ -23,31 +25,36 @@ header {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    
+
 }
-#class-name-input{
+
+#class-name-input {
     background-color: #1e2a38;
     height: 20px;
     opacity: 50%;
     padding: 5px;
     color: white;
-    
+
 }
-#class-name-input:focus{
+
+#class-name-input:focus {
     border: none;
     outline: none;
 }
-.class-name{
+
+.class-name {
     padding: 5px;
 }
-#convert-btn{
+
+#convert-btn {
     display: inline-block;
     padding: 5px;
     margin: 5px;
     background-color: blue;
     width: 100px;
-    
+
 }
+
 #options-container {
     position: absolute;
     top: 50%;
@@ -60,15 +67,69 @@ header {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 2;
 }
+
+/* The switch container */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+}
+
+/* Hide the checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+/* The circle inside the slider */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Checked (ON) state */
+input:checked+.slider {
+    background-color: #4CAF50;
+    /* green background when ON */
+}
+
+/* Move the circle to the right when ON */
+input:checked+.slider:before {
+    transform: translateX(13px);
+}
+
 #code {
     flex: 1;
     padding: 10px;
-    background-color:   #1f1f1f;
+    background-color: #1f1f1f;
     overflow: auto;
     box-sizing: border-box;
     color: white;
 }
-#output-text{
+
+#output-text {
     color: white;
 }
 
@@ -85,10 +146,12 @@ textarea {
     font-size: 1em;
 
 }
-pre{
-    color:black;
+
+pre {
+    color: black;
 }
-#hide-button{
+
+#hide-button {
     display: inline-block;
     color: white;
     background-color: black;
