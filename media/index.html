@@ -9,7 +9,7 @@
 </head>
 
 <body>
-
+    <div id="loader">Loading...</div>
     <div id="editor">
         <div class="class-name">
             <p style="color: white; display: inline-block;">Class Name : </p>
@@ -17,11 +17,11 @@
         </div>
 
         <textarea id="input-text" placeholder="{Place Your JSON}"></textarea>
-        <button id="convert-btn">Convert</button>
 
     </div>
+    <div id="loader-overlay"></div>
     <div id="code">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="top-bar" style="display: flex; justify-content: space-between; align-items: center;">
             <p style="margin: 0;">Dart Class</p>
             <button id="hide-button">Hide Options</button>
         </div>
@@ -68,15 +68,6 @@
                         <input type="checkbox" id="freezed">
                         <span class="slider"></span>
                     </label> Generate Class with @freezed</li>
-                <!-- <li><label><input id="null-safety" type="checkbox" checked> Null Safety</label></li>
-                <li><label><input id="types-only" type="checkbox"> Types only</label></li>
-                <li><label><input id="type-check" type="checkbox"> Type check</label></li>
-                <li><label><input id="encoder-decoder" type="checkbox"> Put encoder & decoder in Class</label></li>
-                <li><label><input id="pro-required" type="checkbox"> Make all properties required</label></li>
-                <li><label><input id="pro-final" type="checkbox"> Make all properties final</label></li>
-                <li><label><input id="copywith" type="checkbox"> Generate CopyWith method</label></li>
-                <li><label><input id="optional" type="checkbox"> Make all properties optional</label></li>
-                <li><label><input id="freezed" type="checkbox"> Generate Class with @freezed</label></li> -->
 
             </ul>
             <button id="copy-btn">Copy Code</button>

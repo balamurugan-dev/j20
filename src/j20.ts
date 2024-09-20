@@ -23,7 +23,7 @@ class JsonToDart {
         this.shouldCheckType = shouldCheckType ?? false;
         this.nullValueDataType = nullValueDataType ?? "dynamic";
         this.nullSafety = nullSafety ?? true;
-        this.handlerSymbol = nullSafety ? "?" : "";
+        this.handlerSymbol = nullSafety  ? "?" : "";
     }
 
     setIncludeCopyWithMethod(b: boolean) {
@@ -149,7 +149,8 @@ class JsonToDart {
                 this.addFromJsonCode(key, typeObj, fromJsonCode);
                 this.addToJsonCode(key, typeObj, toJsonCode);
                 if (this.includeCopyWitMethod) {
-                    parametersForMethod.push(this.toMethodParams(2, type + '?', paramName));
+                    let newType = type.includes('?') ? type : type + '?';
+                    parametersForMethod.push(this.toMethodParams(2, newType, paramName));
                     copyWithAssign.push(`${this.indent(2)}${paramName}: ${paramName} ?? this.${paramName}`);
                 }
                 constructorInit.push(`${this.makeRequiredProperty ? 'required' : ''} this.${paramName}`);

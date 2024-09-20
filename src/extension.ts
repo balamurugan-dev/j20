@@ -11,7 +11,6 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {
-
         vscode.window.showInformationMessage('Hello World from j20!');
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
@@ -124,9 +123,9 @@ async function convertToDart(folder?: string, file?: string, json?: any, object?
     const typeCheck = object?.typecheck ?? false;
     let useNum = jsonToDartConfig.checkNumberAsNum ?? false;
     try {
-        const data = await vscode.env.clipboard.readText();
-        const obj = JSON.parse(json ? json : data);
-        const nullSafety = object?.nullSafety ?? true;
+        // const data = await vscode.env.clipboard.readText();
+        const obj = JSON.parse(json ? json : {});
+        const nullSafety = object?.nullSafety || object?.optional ? true : false ;
         const mergeArrayApproach = jsonToDartConfig.mergeArrayApproach ?? false;
         const copyWithMethod = object?.copywith ?? false;
         const nullValueDataType = jsonToDartConfig.nullValueDataType;
