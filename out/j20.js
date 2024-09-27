@@ -88,17 +88,19 @@ class JsonToDart {
             typeObj.isPrimitive = true;
         }
         else if (value instanceof Array) {
-            const temp = value;
+            var temp = value;
             typeObj.isArray = true;
             if (temp.length === 0) {
                 type = "List<dynamic>";
             }
             else {
+                temp = this.mergeArrayApproach ?
+                    this.merchList(temp) : temp[0];
                 var newKey = key;
                 if (key.endsWith('s')) {
                     newKey = key.slice(0, -1);
                 }
-                const _type = this.findDataType(newKey, temp[0]);
+                const _type = this.findDataType(newKey, temp);
                 typeObj.typeRef = _type;
                 typeObj.isPrimitive = _type.isPrimitive;
                 type = `List<${_type.type}>`;
@@ -112,6 +114,43 @@ class JsonToDart {
         typeObj.type = type;
         return typeObj;
     }
+    merchList(list) {
+        const mergedObject = list.reduce((p, c) => {
+            Object.keys(c).forEach((key) => {
+                const value = c[key];
+                const existingValue = p[key];
+                if (value === null) {
+                    if (existingValue !== undefined && existingValue !== null)
+                        return;
+                    p[key] = null;
+                }
+                else if (Array.isArray(value)) {
+                    if (Array.isArray(existingValue)) {
+                        p[key] = [...existingValue, ...value].filter(v => v !== undefined && v !== null);
+                    }
+                    else {
+                        p[key] = value;
+                    }
+                }
+                else if (value !== null) {
+                    p[key] = value;
+                }
+            });
+            return p;
+        }, {});
+        Object.keys(mergedObject).forEach((key) => {
+            if (Array.isArray(mergedObject[key]) && mergedObject[key].length === 0) {
+                mergedObject[key] = [];
+            }
+            else if (mergedObject[key] === null) {
+                mergedObject[key] = null;
+            }
+        });
+        return mergedObject;
+    }
+    removeEmptyArray = (obj) => Object.keys(obj)
+        .filter(key => !(Array.isArray(obj[key]) && obj[key].length === 0))
+        .reduce((res, key) => ({ ...res, [key]: obj[key] }), {});
     removeNull = (obj) => Object.keys(obj)
         .filter(key => obj[key] !== null)
         .reduce((res, key) => ({ ...res, [key]: obj[key] }), {});
