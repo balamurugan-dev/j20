@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-		
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -18,23 +18,28 @@
     "customEditors": [
     ],
     "menus": {
+      "commandPalette": [
+        {"command": "j20.convertFromClipboardToFile","when": "false"},
+        {"command": "j20.convertFromClipboardToFolder","when": "false"},
+        {"command": "extension.showIfFreezedExists","when": "false"}
+      ],
 			"explorer/context": [
 				{
 					"when": "resourceLangId == dart",
 					"command": "j20.convertFromClipboardToFile",
-					"group": "jsontodart@1"
+					"group": "jsontodart@2"
 				},
 				{
 					"when": "explorerResourceIsFolder",
 					"command": "j20.convertFromClipboardToFolder",
-					"group": "jsontodart@1"
+					"group": "jsontodart@3"
 				}
 			],
 			"editor/context": [
 				{
-					"when": "resourceLangId == dart",
-					"command": "j20.convertFromClipboardToFile",
-					"group": "jsontodart@1"
+					"when": "freezedInFile == true",
+					"command": "j20-freezed-add-variables",
+					"group": "j20@1"
 				}
 			]
 		},
@@ -54,6 +59,15 @@
         "command": "j20.convertFromClipboardToFile",
         "title": "Convert From File",
         "category": "J20"
+      },
+      {
+        "command": "j20-freezed-add-variables",
+        "title": "Add Variable in Freezed Class",
+        "category": "J20"
+      },
+      {
+        "command": "extension.showIfFreezedExists",
+        "title": "Show if @freezed exists"
       }
     ]
   },

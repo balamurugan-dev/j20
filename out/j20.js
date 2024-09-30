@@ -196,7 +196,7 @@ class JsonToDart {
                     copyWithAssign.push(`${this.indent(2)}${paramName}: ${paramName} ?? this.${paramName}`);
                 }
                 constructorInit.push(`${this.makeRequiredProperty ? 'required' : ''} this.${paramName}`);
-                freezedConstructorCodes.push(this.toMethodParams(2, `${this.makeRequiredProperty ? 'required' : ''}`, typeObj.type, paramName));
+                freezedConstructorCodes.push(this.toMethodParams(2, `${this.makeRequiredProperty ? 'required' : ''}`, this.makeRequiredProperty ? typeObj.type : this.formatType(typeObj.type, '?'), paramName));
             });
         }
         const fromListCode = this.includeFromListMethod ?

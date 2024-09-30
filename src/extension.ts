@@ -4,14 +4,19 @@ import JsonToDart from './j20';
 import * as fs from 'fs';
 import * as path from 'path';
 const camelcase = require('camelcase');
+import { addVariableToState } from './utils/update_code';
+import { NAME_ERROR_MESSAGE, NAME_REG_EXP, VARIABLE_NAME_ERROR_MESSAGE, NO_FOLDER_IN_WORKSPACE_FOUND, SUCCESFULLY_SET_PARENT } from './utils/constants';
+
 
 
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
+//   console.log(`-------extension is activated : --------`);
     const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {
         vscode.window.showInformationMessage('Hello World from j20!');
+        // access token  = uopqxwufu2b5fh3y5it2joszs3rikg4rrizcnrvfgtbsxxujlg7a ;
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -57,6 +62,8 @@ export async function activate(context: vscode.ExtensionContext) {
             //Get The Uri for Script file 
             const scriptUri = currentPanel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'media', 'script.js')))
             let html = fs.readFileSync(htmlPath, 'utf8');
+            // console.log(`-------on html path messsage : ${htmlPath}--------`);
+            // console.log(`-------on html list : ${html.split('/n')}--------`);
             html = html.replace('{{styleUri}}', styleUri.toString());
             html = html.replace('{{scriptUri}}', scriptUri.toString());
 
@@ -95,6 +102,60 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
     context.subscriptions.push(disposable);
+    //check if it is freezed class
+  let freezed = vscode.commands.registerCommand('extension.showIfFreezedExists', () => {
+    const editor = vscode.window.activeTextEditor;
+    
+    if (editor) {
+      const document = editor.document;
+      const text = document.getText();
+
+      // Check if the file contains the "@freezed" string
+      if (text.includes('@freezed')) {
+        vscode.commands.executeCommand('setContext', 'freezedInFile', true);
+      } else {
+        vscode.commands.executeCommand('setContext', 'freezedInFile', false);
+      }
+    }
+  });
+//   console.log(`-------Execute the command when the active editor changes --------`);
+
+  // Execute the command when the active editor changes
+  context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(() => {
+    // console.log(`-----inside--Execute the command when the active editor changes --------`);
+
+    vscode.commands.executeCommand('extension.showIfFreezedExists');
+  }));
+//   console.log(`-------Execute the command when the active editor saved --------`);
+
+  // Execute the command when the text document is saved
+  context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
+    // console.log(`------ inside -Execute the command when the active editor saved--------`);
+
+    vscode.commands.executeCommand('extension.showIfFreezedExists');
+  }));
+
+  context.subscriptions.push(freezed);
+
+    // add variables
+    let createVariableInState = vscode.commands.registerCommand('j20-freezed-add-variables', async (args) => {
+		let nameFieldValidator = new RegExp(NAME_REG_EXP);
+		var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"],
+			{ title: "Select Variable Type", canPickMany: false });
+		if (varType === undefined) {
+			return "No data";
+		}
+		let varName = await vscode.window.showInputBox({
+			title: "Enter Variable Name",
+			validateInput: (val) => nameFieldValidator.test(val) ? NAME_ERROR_MESSAGE : '',
+		});
+		if (varName === undefined) {
+			return "No data";
+		}
+		addVariableToState(args.path, varType, varName);
+	});
+
+	context.subscriptions.push(createVariableInState);
 }
 export function deactivate() { }
 class JsonToDartConfig {
@@ -145,14 +206,23 @@ async function convertToDart(folder?: string, file?: string, json?: any, object?
             code = `import 'dart:convert';\n` + code;
         }
         if (object?.typesonly == false && object?.freezed) {
-            code = `import 'package:freezed_annotation/freezed_annotation.dart';
-part '${camelcase(className ? className : "Json", { pascalCase: true })}.freezed.dart';
-part '${camelcase(className ? className : "Json", { pascalCase: true })}.g.dart';\n` + code;
+
+            code = `// Don't have packages for freezed please add below packages
+// flutter pub add freezed_annotation
+// flutter pub add dev:build_runner
+// flutter pub add dev:freezed
+// # if using freezed to generate fromJson/toJson, also add:
+// flutter pub add json_annotation
+// flutter pub add dev:json_serializable
+// To run the code generator, execute the following command:
+// dart run build_runner build
+import 'package:freezed_annotation/freezed_annotation.dart';
+part '${camelcase(className ? className : "json",)}.freezed.dart';
+part '${camelcase(className ? className : "json",)}.g.dart';\n` + code;
         }
         return code;
     } catch (e) {
         // console.log(`------inside catch function :${e} ---------`);
-
         vscode.window.showErrorMessage(`${e}`);
     }
 }
