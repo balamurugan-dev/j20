@@ -27,9 +27,9 @@ Refer the article to know about the extension.
 | :--------------------------------------------------:  |
 | [![create_parent_set_gif][]][create_parent_set_gif]   |
 
-|                Add Variable to Freezed Class              |
-| :---------------------------------------------------:     |
-| [![add_var_to_state_gif][]][add_var_to_state_youtube]     |
+|                Add Variable to Freezed Class          |
+| :---------------------------------------------------: |
+| [![create_parent_set_gif][]][create_parent_set_gif]   |
 
 ## Special Words Explanations 
 
