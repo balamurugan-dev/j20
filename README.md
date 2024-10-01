@@ -1,71 +1,79 @@
-# j20 README
+[![logo][]][author]
 
-This is the README for your extension "j20". After writing up a brief description, we recommend including the following sections.
+[![Discord Chat](https://img.shields.io/badge/chat-discord-blue.svg)](https://discord.gg/KYPkhEx)
+
+<a href="https://www.buymeacoffee.com/BalaDhruv" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+## Introduction
+
+This is the VS Code Extension to convert JSON to DART.
+
+I am Lazy Freelance Flutter Developer who doesn't wanna create dart model class from JSON repeatedly. That's why I am building this extension to solve this problem.
+
+## Article
+
+Refer the article to know about the extension.
+
+[Generate Redux State, reducer, action, and Middleware via VS Code Extension - Medium](https://medium.com/@androbalamail/generate-redux-state-reducer-action-and-middleware-via-vs-code-extension-flutter-redux-gen-54e1defee2bd)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+1.  Convert JSON into DART class
+2.  Add Variable to existing freezed class.
 
-For example if there is an image subfolder under your extension project workspace:
+## How to Use
 
-\!\[feature X\]\(images/feature-x.png\)
+|                  Convert JSON to DART                 |
+| :--------------------------------------------------:  |
+| [![create_parent_set_gif][]][create_parent_set_gif]   |
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+|                Add Variable to Freezed Class          |
+| :---------------------------------------------------: |
+| [![add_var_to_state_gif][]][add_var_to_state_youtube] |
 
-## Requirements
+## Special Words Explanations 
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+| Key Words | Description                                                        |
+| :------------ | :----------------------------------------------------------------- |
+| Null Safety         | create variable with Null(?)    |
+| Types Only    | Create class with variable declaration          |
+| Type Check   | To Check type of value before its use inside fromJson and toJson  |
+| @freezed   | To reduce hundreds of lines of code for implemeting constructor,
+coywith, toString, operator ==, hashCode and serialization .It is allowing to focus on the definition of your model |
 
-## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Command Palette
 
-For example:
+| Command           | Description                       |
+| :---------------- | :-------------------------------- |
+| J20:JSON to DART | Open editor for convert JSON |
 
-This extension contributes the following settings:
+## Upcoming Features
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+1. Adding addinal methods for JSON conversion
 
-## Known Issues
+## Youtube PlayList
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+[Flutter Redux Gen Youtube][flg_youtube_playlist]
 
-## Release Notes
+## Contact
 
-Users appreciate release notes as you update your extension.
+[Click here to add you comments and feedback][contact]
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[logo]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/master/media/logo/logo.png?token=GHSAT0AAAAAACWSLK2SSBZKC3KPZDZLEO2GZX32MJA
+[author]: https://balamurugan.dev/
+[contact]: https://forms.gle/wXPgEEAYvczjWwys8
+[create_parent_set_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-parent-set.gif
+[create_set_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-redux-set.gif
+[create_state_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-state.gif
+[create_reducer_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-reducer.gif
+[create_middleware_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-middleware.gif
+[create_action_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-action.gif
+[add_var_to_state_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/add-var-to-state.gif
+[generate_state_youtube]: https://www.youtube.com/watch?v=vnqoh8owWfI
+[generate_reducer_youtube]: https://www.youtube.com/watch?v=JuCVdc-MWRM
+[generate_middleware_youtube]: https://www.youtube.com/watch?v=9-Ky7X2DW6Q
+[generate_action_youtube]: https://www.youtube.com/watch?v=F7Zk6VMqkFk
+[generate_set_youtube]: https://www.youtube.com/watch?v=aOMU4OHpoWw
+[add_var_to_state_youtube]: https://youtu.be/Pco-2Qq_XGA?list=PLAtrbE9cCxChjH_1A9mW3qlfBrzlfQk5W
+[flg_youtube_playlist]: https://www.youtube.com/watch?v=ISRztcuk2lg&list=PLAtrbE9cCxChjH_1A9mW3qlfBrzlfQk5W
