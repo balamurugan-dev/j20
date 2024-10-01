@@ -1,8 +1,29 @@
 {
   "name": "j20",
   "displayName": "j20",
-  "description": "convert json into dart",
+  "description": "convert json into dart class",
   "version": "0.0.1",
+  "publisher": "BalaDhruv",
+  "author": {
+    "name": "Balamurugan",
+    "email": "androbalamail@gmail.com",
+    "url": "https://balamurugan.dev/"
+  },
+  "homepage": "https://github.com/balamurugan-dev/j20/tree/master",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/balamurugan-dev/j20/tree/master"
+  },
+  "bugs": {
+    "url": "https://github.com/balamurugan-dev/j20/issues"
+  },
+  "icon": "media/logo/logo.png",
+  "keywords": [
+		"dartclass",
+		"jsontodart",
+		"Convertor",
+		"json"
+	],
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -14,50 +35,25 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
- 
-    "customEditors": [
-    ],
     "menus": {
       "commandPalette": [
-        {"command": "j20.convertFromClipboardToFile","when": "false"},
-        {"command": "j20.convertFromClipboardToFolder","when": "false"},
-        {"command": "extension.showIfFreezedExists","when": "false"}
+        {
+          "command": "extension.showIfFreezedExists",
+          "when": "false"
+        }
       ],
-			"explorer/context": [
-				{
-					"when": "resourceLangId == dart",
-					"command": "j20.convertFromClipboardToFile",
-					"group": "jsontodart@2"
-				},
-				{
-					"when": "explorerResourceIsFolder",
-					"command": "j20.convertFromClipboardToFolder",
-					"group": "jsontodart@3"
-				}
-			],
-			"editor/context": [
-				{
-					"when": "freezedInFile == true",
-					"command": "j20-freezed-add-variables",
-					"group": "j20@1"
-				}
-			]
-		},
+      "editor/context": [
+        {
+          "when": "freezedInFile == true",
+          "command": "j20-freezed-add-variables",
+          "group": "j20@1"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "j20.helloWorld",
-        "title": "Json To dart",
-        "category": "J20"
-        
-      },
-      {
-        "command": "j20.convertFromClipboardToFolder",
-        "title": "Convert From Folder",
-        "category": "J20"
-      },
-      {
-        "command": "j20.convertFromClipboardToFile",
-        "title": "Convert From File",
+        "title": "JSON to DART",
         "category": "J20"
       },
       {
@@ -94,7 +90,6 @@
   },
   "dependencies": {
     "fs-extra": "^11.2.0",
-    "lodash": "^4.17.21",
-    "yaml": "^2.5.0"
+    "lodash": "^4.17.21"
   }
 }
