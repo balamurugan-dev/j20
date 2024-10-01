@@ -38,8 +38,7 @@ Refer the article to know about the extension.
 | Null Safety         | create variable with Null(?)    |
 | Types Only    | Create class with variable declaration          |
 | Type Check   | To Check type of value before its use inside fromJson and toJson  |
-| @freezed   | To reduce hundreds of lines of code for implemeting constructor,
-coywith, toString, operator ==, hashCode and serialization .It is allowing to focus on the definition of your model |
+| @freezed   | To reduce hundreds of lines of code for implemeting constructor,coywith, toString, operator ==, hashCode and serialization .It is allowing to focus on the definition of your model |
 
 
 ## Command Palette
@@ -52,28 +51,16 @@ coywith, toString, operator ==, hashCode and serialization .It is allowing to fo
 
 1. Adding addinal methods for JSON conversion
 
-## Youtube PlayList
+<!-- ## Youtube PlayList -->
 
-[Flutter Redux Gen Youtube][flg_youtube_playlist]
-
+<!-- [Flutter Redux Gen Youtube][flg_youtube_playlist] -->
 ## Contact
 
 [Click here to add you comments and feedback][contact]
 
-[logo]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/master/media/logo/logo.png?token=GHSAT0AAAAAACWSLK2SSBZKC3KPZDZLEO2GZX32MJA
+[logo]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/master/media/logo/logo.png
 [author]: https://balamurugan.dev/
 [contact]: https://forms.gle/wXPgEEAYvczjWwys8
-[create_parent_set_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-parent-set.gif
-[create_set_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-redux-set.gif
-[create_state_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-state.gif
-[create_reducer_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-reducer.gif
-[create_middleware_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-middleware.gif
-[create_action_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/create-action.gif
+[create_parent_set_gif]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/master/media/gifs/convert-json-to-dart.gif
 [add_var_to_state_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/add-var-to-state.gif
-[generate_state_youtube]: https://www.youtube.com/watch?v=vnqoh8owWfI
-[generate_reducer_youtube]: https://www.youtube.com/watch?v=JuCVdc-MWRM
-[generate_middleware_youtube]: https://www.youtube.com/watch?v=9-Ky7X2DW6Q
-[generate_action_youtube]: https://www.youtube.com/watch?v=F7Zk6VMqkFk
-[generate_set_youtube]: https://www.youtube.com/watch?v=aOMU4OHpoWw
-[add_var_to_state_youtube]: https://youtu.be/Pco-2Qq_XGA?list=PLAtrbE9cCxChjH_1A9mW3qlfBrzlfQk5W
 [flg_youtube_playlist]: https://www.youtube.com/watch?v=ISRztcuk2lg&list=PLAtrbE9cCxChjH_1A9mW3qlfBrzlfQk5W
