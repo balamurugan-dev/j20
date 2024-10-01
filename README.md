@@ -14,7 +14,7 @@ I am Lazy Freelance Flutter Developer who doesn't wanna create dart model class 
 
 Refer the article to know about the extension.
 
-[Generate Redux State, reducer, action, and Middleware via VS Code Extension - Medium](https://medium.com/@androbalamail/generate-redux-state-reducer-action-and-middleware-via-vs-code-extension-flutter-redux-gen-54e1defee2bd)
+[Convert JSON to DART via VS Code Extension - Medium](https://medium.com/@androbalamail/generate-redux-state-reducer-action-and-middleware-via-vs-code-extension-flutter-redux-gen-54e1defee2bd)
 
 ## Features
 
@@ -27,9 +27,9 @@ Refer the article to know about the extension.
 | :--------------------------------------------------:  |
 | [![create_parent_set_gif][]][create_parent_set_gif]   |
 
-|                Add Variable to Freezed Class          |
-| :---------------------------------------------------: |
-| [![add_var_to_state_gif][]][add_var_to_state_youtube] |
+|                Add Variable to Freezed Class              |
+| :---------------------------------------------------:     |
+| [![add_var_to_state_gif][]][add_var_to_state_youtube]     |
 
 ## Special Words Explanations 
 
