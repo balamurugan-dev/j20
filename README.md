@@ -51,6 +51,10 @@ Refer the article to know about the extension.
 
 1. Adding addinal methods for JSON conversion
 
+## Related Plugins
+1. [Flutter Redux Gen (FRG)](https://marketplace.visualstudio.com/items?itemName=BalaDhruv.flutter-redux-gen)
+     This is the VS Code Extension to generate Redux Code (State, Reducer, Middleware and Action)
+
 <!-- ## Youtube PlayList -->
 
 <!-- [Flutter Redux Gen Youtube][flg_youtube_playlist] -->
