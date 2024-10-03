@@ -2,7 +2,7 @@
   "name": "j20",
   "displayName": "J2O - Json to Dart (freezed)",
   "description": "Json to Dart classes converter including freezed classes",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "publisher": "BalaDhruv",
   "author": {
     "name": "Balamurugan",
@@ -19,11 +19,11 @@
   },
   "icon": "media/logo/logo.png",
   "keywords": [
-		"dartclass",
-		"jsontodart",
-		"Convertor",
-		"json"
-	],
+    "dartclass",
+    "jsontodart",
+    "Convertor",
+    "json"
+  ],
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -31,28 +31,14 @@
     "Other"
   ],
   "activationEvents": [
-  
+    "*",
+    "onCommand:json-to-dart"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "menus": {
-      "commandPalette": [
-        {
-          "command": "extension.showIfFreezedExists",
-          "when": "false"
-        }
-      ],
-      "editor/context": [
-        {
-          "when": "freezedInFile == true",
-          "command": "j20-freezed-add-variables",
-          "group": "j20@1"
-        }
-      ]
-    },
     "commands": [
       {
-        "command": "j20.helloWorld",
+        "command": "json-to-dart",
         "title": "JSON to DART",
         "category": "J20"
       },
@@ -65,7 +51,26 @@
         "command": "extension.showIfFreezedExists",
         "title": "Show if @freezed exists"
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "extension.showIfFreezedExists",
+          "when": "false"
+        },
+        {
+          "command": "j20-freezed-add-variables",
+          "when": "false"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "freezedInFile == true",
+          "command": "j20-freezed-add-variables",
+          "group": "j20@1"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

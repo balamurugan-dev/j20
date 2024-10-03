@@ -38,7 +38,7 @@ const constants_1 = require("./utils/constants");
 let currentPanel = undefined;
 async function activate(context) {
     //   console.log(`-------extension is activated : --------`);
-    const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {
+    const disposable = vscode.commands.registerCommand('json-to-dart', async () => {
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;

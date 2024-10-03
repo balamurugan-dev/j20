@@ -14,7 +14,7 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
 //   console.log(`-------extension is activated : --------`);
-    const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {  
+    const disposable = vscode.commands.registerCommand('json-to-dart', async () => {  
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
