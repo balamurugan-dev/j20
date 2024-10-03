@@ -65,6 +65,6 @@ Refer the article to know about the extension.
 [logo]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/main/media/logo/logo.png
 [author]: https://balamurugan.dev/
 [contact]: https://forms.gle/wXPgEEAYvczjWwys8
-[Json_to_dart_gif]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/master/media/gifs/convert-json-to-dart.gif
-[add_var_to_Freezed_gif]: https://raw.githubusercontent.com/BalaDhruv/Flutter_Redux_Gen/master/media/demo/add-var-to-state.gif
+[Json_to_dart_gif]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/main/media/gifs/convert-json-to-dart.gif
+[add_var_to_Freezed_gif]: https://raw.githubusercontent.com/balamurugan-dev/j20/refs/heads/main/media/gifs/add_variable.gif
 [flg_youtube_playlist]: https://www.youtube.com/watch?v=ISRztcuk2lg&list=PLAtrbE9cCxChjH_1A9mW3qlfBrzlfQk5W
