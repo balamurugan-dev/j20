@@ -2,7 +2,7 @@
   "name": "j20",
   "displayName": "J2O - Json to Dart (freezed)",
   "description": "Json to Dart classes converter including freezed classes",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "publisher": "BalaDhruv",
   "author": {
     "name": "Balamurugan",
@@ -31,8 +31,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*",
-    "onCommand:json-to-dart"
+
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -40,34 +39,25 @@
       {
         "command": "json-to-dart",
         "title": "JSON to DART",
-        "category": "J20"
+        "category": "J2O"
       },
       {
-        "command": "j20-freezed-add-variables",
+        "command": "freezed-add-variables",
         "title": "Add Variable in Freezed Class",
-        "category": "J20"
-      },
-      {
-        "command": "extension.showIfFreezedExists",
-        "title": "Show if @freezed exists"
+        "category": "J2O"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "extension.showIfFreezedExists",
-          "when": "false"
-        },
-        {
-          "command": "j20-freezed-add-variables",
+          "command": "freezed-add-variables",
           "when": "false"
         }
       ],
       "editor/context": [
         {
-          "when": "freezedInFile == true",
-          "command": "j20-freezed-add-variables",
-          "group": "j20@1"
+          "command": "freezed-add-variables",
+          "group": "J2O@1"
         }
       ]
     }

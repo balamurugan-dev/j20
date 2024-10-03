@@ -100,43 +100,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
     context.subscriptions.push(disposable);
-    //check if it is freezed class
-  let freezed = vscode.commands.registerCommand('extension.showIfFreezedExists', () => {
-    const editor = vscode.window.activeTextEditor;
-    
-    if (editor) {
-      const document = editor.document;
-      const text = document.getText();
-
-      // Check if the file contains the "@freezed" string
-      if (text.includes('@freezed')) {
-        vscode.commands.executeCommand('setContext', 'freezedInFile', true);
-      } else {
-        vscode.commands.executeCommand('setContext', 'freezedInFile', false);
-      }
-    }
-  });
-//   console.log(`-------Execute the command when the active editor changes --------`);
-
-  // Execute the command when the active editor changes
-  context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(() => {
-    // console.log(`-----inside--Execute the command when the active editor changes --------`);
-
-    vscode.commands.executeCommand('extension.showIfFreezedExists');
-  }));
-//   console.log(`-------Execute the command when the active editor saved --------`);
-
-  // Execute the command when the text document is saved
-  context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(() => {
-    // console.log(`------ inside -Execute the command when the active editor saved--------`);
-
-    vscode.commands.executeCommand('extension.showIfFreezedExists');
-  }));
-
-  context.subscriptions.push(freezed);
 
     // add variables
-    let createVariableInState = vscode.commands.registerCommand('j20-freezed-add-variables', async (args) => {
+    let createVariableInState = vscode.commands.registerCommand('freezed-add-variables', async (args) => {
 		let nameFieldValidator = new RegExp(NAME_REG_EXP);
 		var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"],
 			{ title: "Select Variable Type", canPickMany: false });
