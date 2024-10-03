@@ -14,9 +14,7 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
 //   console.log(`-------extension is activated : --------`);
-    const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {
-        vscode.window.showInformationMessage('Hello World from j20!');
-        // access token  = uopqxwufu2b5fh3y5it2joszs3rikg4rrizcnrvfgtbsxxujlg7a ;
+    const disposable = vscode.commands.registerCommand('j20.helloWorld', async () => {  
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -205,9 +203,10 @@ async function convertToDart(folder?: string, file?: string, json?: any, object?
         if (object?.typesonly == false && object?.encoder) {
             code = `import 'dart:convert';\n` + code;
         }
-        if (object?.typesonly == false && object?.freezed) {
+        if (object?.freezed) {
 
-            code = `// Don't have packages for freezed please add below packages
+            code = `
+// Don't have packages for freezed ,add below packages
 // flutter pub add freezed_annotation
 // flutter pub add dev:build_runner
 // flutter pub add dev:freezed
@@ -217,8 +216,8 @@ async function convertToDart(folder?: string, file?: string, json?: any, object?
 // To run the code generator, execute the following command:
 // dart run build_runner build
 import 'package:freezed_annotation/freezed_annotation.dart';
-part '${camelcase(className ? className : "json",)}.freezed.dart';
-part '${camelcase(className ? className : "json",)}.g.dart';\n` + code;
+part '{your file name}.freezed.dart';
+part '{your file name}.g.dart';\n` + code;
         }
         return code;
     } catch (e) {

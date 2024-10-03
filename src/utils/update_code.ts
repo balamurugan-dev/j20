@@ -32,6 +32,7 @@ function _addVariableToState(path: string, varType: string, varName: string) {
 		const indexOfLine = updatedFreezedCodeList.findIndex(value => value.includes(`${className}(`));
 		fs.writeFileSync(newAPath, updatedFreezedCodeList.join('\n'));
 	vscode.window.showInformationMessage(`Variable is added...`);
+	vscode.window.showInformationMessage('To run build_runner, use: dart run build_runner build');
 	}
 	}catch (e) {
 		vscode.window.showErrorMessage(`${e}`);
