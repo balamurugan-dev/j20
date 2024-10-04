@@ -1,6 +1,5 @@
 
 import * as vscode from 'vscode';
-// import JsonToDart from './j20';
 import * as fs from 'fs';
 import * as path from 'path';
 import { addVariableToState } from './utils/update_code';
@@ -12,14 +11,11 @@ import { convertToDart } from './utils/jsonToDart/json_to_dart';
 
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log(`-------extension is activated : --------`);
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
    
     let convertJSON = vscode.commands.registerCommand('json-to-dart.convertJSON', async () => {
         try {
-            // Your command logic
-    vscode.window.showInformationMessage('JSON conversion IsReady dear');
-       
+            // Your command logic       
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -102,9 +98,9 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
             );
         }
     } catch (error) {
-        console.error('Error in convertJSON command handler:', error);
-        console.error(error); // Log the error
-        vscode.window.showErrorMessage(`Error: ${error}`);
+        // console.error('Error in convertJSON command handler:', error);
+        // console.error(error); // Log the error
+        vscode.window.showErrorMessage(`${error}`);
     }
     });
 
@@ -113,8 +109,8 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
     // add variables
     let createVariableInFreezed = vscode.commands.registerCommand('json-to-dart.addVariableInFreezed', async (args) => {
-        console.log('createVariableInFreezed command handler called');
-        vscode.window.showInformationMessage('createVariableInFreezed command handler called');
+        // console.log('createVariableInFreezed command handler called');
+        // vscode.window.showInformationMessage('createVariableInFreezed command handler called');
 
         try {
             let nameFieldValidator = new RegExp(NAME_REG_EXP);
@@ -132,7 +128,7 @@ let currentPanel: vscode.WebviewPanel | undefined = undefined;
             }
             addVariableToState(args.path, varType, varName);
         } catch (error) {
-            console.error('Error in createVariableInFreezed command handler:', error);
+            vscode.window.showErrorMessage(`${error}`);
         }
       
     });

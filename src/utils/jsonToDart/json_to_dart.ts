@@ -27,9 +27,6 @@ async function _convertToDart(folder?: string, file?: string, json?: any, object
     const typeCheck = object?.typecheck ?? false;
     let useNum = jsonToDartConfig.checkNumberAsNum ?? false;
     try {
-        // const data = await vscode.env.clipboard.readText();
-        vscode.window.showInformationMessage('JSON conversion json to dart');
-
         const obj = JSON.parse(json ? json : {});
         const nullSafety = object?.nullSafety || object?.optional ? true : false;
         const mergeArrayApproach = jsonToDartConfig.mergeArrayApproach ?? false;

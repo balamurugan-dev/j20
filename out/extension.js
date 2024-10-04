@@ -26,19 +26,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
-// import JsonToDart from './j20';
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const update_code_1 = require("./utils/update_code");
 const constants_1 = require("./utils/constants");
 const json_to_dart_1 = require("./utils/jsonToDart/json_to_dart");
 function activate(context) {
-    console.log(`-------extension is activated : --------`);
     let currentPanel = undefined;
     let convertJSON = vscode.commands.registerCommand('json-to-dart.convertJSON', async () => {
         try {
-            // Your command logic
-            vscode.window.showInformationMessage('JSON conversion IsReady dear');
+            // Your command logic       
             const columnToShowIn = vscode.window.activeTextEditor
                 ? vscode.window.activeTextEditor.viewColumn
                 : undefined;
@@ -101,16 +98,16 @@ function activate(context) {
             }
         }
         catch (error) {
-            console.error('Error in convertJSON command handler:', error);
-            console.error(error); // Log the error
-            vscode.window.showErrorMessage(`Error: ${error}`);
+            // console.error('Error in convertJSON command handler:', error);
+            // console.error(error); // Log the error
+            vscode.window.showErrorMessage(`${error}`);
         }
     });
     context.subscriptions.push(convertJSON);
     // add variables
     let createVariableInFreezed = vscode.commands.registerCommand('json-to-dart.addVariableInFreezed', async (args) => {
-        console.log('createVariableInFreezed command handler called');
-        vscode.window.showInformationMessage('createVariableInFreezed command handler called');
+        // console.log('createVariableInFreezed command handler called');
+        // vscode.window.showInformationMessage('createVariableInFreezed command handler called');
         try {
             let nameFieldValidator = new RegExp(constants_1.NAME_REG_EXP);
             var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"], { title: "Select Variable Type", canPickMany: false });
@@ -127,7 +124,7 @@ function activate(context) {
             (0, update_code_1.addVariableToState)(args.path, varType, varName);
         }
         catch (error) {
-            console.error('Error in createVariableInFreezed command handler:', error);
+            vscode.window.showErrorMessage(`${error}`);
         }
     });
     context.subscriptions.push(createVariableInFreezed);

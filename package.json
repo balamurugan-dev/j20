@@ -2,7 +2,7 @@
   "name": "j20",
   "displayName": "J2O - Json to Dart (freezed)",
   "description": "Json to Dart classes converter including freezed classes",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "BalaDhruv",
   "author": {
     "name": "Balamurugan",
