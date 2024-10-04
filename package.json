@@ -2,7 +2,7 @@
   "name": "j20",
   "displayName": "J2O - Json to Dart (freezed)",
   "description": "Json to Dart classes converter including freezed classes",
-  "version": "0.0.11",
+  "version": "0.0.3",
   "publisher": "BalaDhruv",
   "author": {
     "name": "Balamurugan",
@@ -25,26 +25,22 @@
     "json"
   ],
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.94.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-  
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "json-to-dart.convertJSON",
-        "title": "JSON to DART",
-        "category": "J2O"
+        "title": "J2O: JSON to DART"
       },
       {
         "command": "json-to-dart.addVariableInFreezed",
-        "title": "Add Variable in Freezed Class",
-        "category": "J2O"
+        "title": "J2O: Add Variable in Freezed Class"
       }
     ],
     "menus": {
@@ -74,7 +70,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
-    "@types/vscode": "^1.60.0",
+    "@types/vscode": "^1.94.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
     "@vscode/test-cli": "^0.0.9",

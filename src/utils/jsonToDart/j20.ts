@@ -1,9 +1,9 @@
-const camelcase = require('camelcase');
+import { getFormattedTypeName, getFormattedClassName } from "../utilities";
 
-class JsonToDart {
-    classNames: Array<String> = [];
+export default class JsonToDart {
+    classNames: Array<string> = [];
     classModels: Array<Result> = [];
-    indentText: String;
+    indentText: string;
     shouldCheckType: boolean;
     nullSafety: boolean;
     includeCopyWitMethod: boolean = false;
@@ -16,9 +16,9 @@ class JsonToDart {
     mergeArrayApproach: boolean = true;
     typesOnly: boolean = false;
     useNum: boolean = false;
-    nullValueDataType: String;
-    handlerSymbol: String;
-    constructor(tabSize: number, shouldCheckType?: boolean, nullValueDataType?: String, nullSafety?: boolean) {
+    nullValueDataType: string;
+    handlerSymbol: string;
+    constructor(tabSize: number, shouldCheckType?: boolean, nullValueDataType?: string, nullSafety?: boolean) {
         this.indentText = " ".repeat(tabSize);
         this.shouldCheckType = shouldCheckType ?? false;
         this.nullValueDataType = nullValueDataType ?? "dynamic";
@@ -58,15 +58,15 @@ class JsonToDart {
     }
 
 
-    addClass(className: String, classModel: String) {
+    addClass(className: string, classModel: string) {
         this.classModels.splice(0, 0, {
             code: classModel,
             className: className,
         });
     }
 
-    findDataType(key: String, value: any,): TypeObj {
-        let type = "dynamic" as String;
+    findDataType(key: string, value: any,): TypeObj {
+        let type = "dynamic" as string;
         const typeObj = new TypeObj();
         if (value === null || value === undefined) {
             type = this.nullValueDataType;
@@ -158,20 +158,20 @@ class JsonToDart {
             .filter(key => obj[key] !== null)
             .reduce((res, key) => ({ ...res, [key]: obj[key] }), {});
 
-    formatType(type: String, handlerSymbol: String) {
+    formatType(type: string, handlerSymbol: string) {
         if (type === "dynamic") { return type; }
         return `${type}${handlerSymbol}`;
     }
-    parse(className: String, json: any): Result[] {
+    parse(className: string, json: any): Result[] {
         className = this.toClassName(className);
         this.classNames.push(className);
-        const parameters: String[] = [];
-        const parametersForMethod: String[] = [];
-        const fromJsonCode: String[] = [];
-        const toJsonCode: String[] = [];
-        const constructorInit: String[] = [];
-        const copyWithAssign: String[] = [];
-        const freezedConstructorCodes: String[] = [];
+        const parameters: string[] = [];
+        const parametersForMethod: string[] = [];
+        const fromJsonCode: string[] = [];
+        const toJsonCode: string[] = [];
+        const constructorInit: string[] = [];
+        const copyWithAssign: string[] = [];
+        const freezedConstructorCodes: string[] = [];
         // const typesOnlyCodes : String[]=[];
         if (json) {
             if (Array.isArray(json) && json.length > 0) {
@@ -187,7 +187,7 @@ class JsonToDart {
                 const value = entry[1];
                 const typeObj = this.findDataType(key, value);
                 const type = this.formatType(typeObj.type, this.handlerSymbol);
-                const paramName = camelcase(key);
+                const paramName = getFormattedTypeName(key);
                 var final = this.makeFinalProperty ? 'final' : '';
                 parameters.push(this.toCode(1, final, type, paramName));
                 this.addFromJsonCode(key, typeObj, fromJsonCode);
@@ -245,7 +245,7 @@ ${this.indent(1)}${className}(${constructorInit.length ? `{${constructorInit.joi
 class ${className} {${parametersCode}
 ${this.indent(1)}${className}(${constructorInit.length ? `{${constructorInit.join(", ")}}` : ""});
 
-${this.indent(1)}factory ${className}.fromJson(Map<String, dynamic> json) {
+${this.indent(1)}${className}.fromJson(Map<String, dynamic> json) {
 ${fromJsonCode.join("\n")}
 ${this.indent(1)}}
 ${fromListCode}
@@ -263,8 +263,8 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
     }
 
 
-    toClassName(name: String): String {
-        name = camelcase(name, { pascalCase: true });
+    toClassName(name: string): string {
+        name = getFormattedClassName(name);
         let i = 0;
         let className = name;
         while (this.classNames.includes(className)) {
@@ -275,7 +275,7 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
         return className;
     }
 
-    r = (type: TypeObj): String => {
+    r = (type: TypeObj): string => {
 
         if (type.typeRef !== undefined) {
             return `(e) => e == null?[]:(e as List).map(${this.r(type.typeRef)}).toList()`;
@@ -284,16 +284,16 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
     };
 
 
-    p = (type: TypeObj): String => {
+    p = (type: TypeObj): string => {
         if (type.typeRef !== undefined) {
             return `(e) => e?.map(${this.p(type.typeRef)})?.toList() ?? []`;
         }
         return `(e) => e.toJson()`;
     };
 
-    addFromJsonCode(key: String, typeObj: TypeObj, fromJsonCode: Array<String>) {
+    addFromJsonCode(key: string, typeObj: TypeObj, fromJsonCode: Array<string>) {
         const type = typeObj.type;
-        const paramName = `${camelcase(key)}`;
+        const paramName = `${getFormattedTypeName(key)}`;
         let indentTab = 2;
         if (this.shouldCheckType && type !== "dynamic") {
             indentTab = 3;
@@ -333,7 +333,7 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
         else {
             if (this.useNum && typeObj.isNum) {
 
-                const methodName = camelcase(type, { pascalCase: true });
+                const methodName = getFormattedClassName(type);
                 fromJsonCode.push(this.toCode(indentTab, paramName, "=", `(json["${key}"] as num).to${methodName}()`));
             }
             else {
@@ -347,8 +347,8 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
         }
     }
 
-    addToJsonCode(key: String, typeObj: TypeObj, fromJsonCode: Array<String>) {
-        const paramName = `${camelcase(key)}`;
+    addToJsonCode(key: string, typeObj: TypeObj, fromJsonCode: Array<string>) {
+        const paramName = `${getFormattedTypeName(key)}`;
         const paramCode = `_data["${key}"]`;
         if (typeObj.isObject) {
             fromJsonCode.push(this.toCondition(2, `if(${paramName} != null) {`));
@@ -375,26 +375,26 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
     }
 
 
-    indent(count: number): String {
+    indent(count: number): string {
         return this.indentText.repeat(count);
     }
 
-    toCode(count: number, ...text: Array<String>): String {
+    toCode(count: number, ...text: Array<string>): string {
         return `${this.indent(count)}${text.join(" ")};`;
     }
-    toMethodParams(count: number, ...text: Array<String>): String {
+    toMethodParams(count: number, ...text: Array<string>): string {
         return `${this.indent(count)}${text.join(" ")},`;
     }
 
-    toCondition(count: number, ...text: Array<String>): String {
+    toCondition(count: number, ...text: Array<string>): string {
         return `${this.indent(count)}${text.join(" ")}`;
     }
 }
 
 
 class TypeObj {
-    type: String = "dynamic";
-    defaultValue: String = "''";
+    type: string = "dynamic";
+    defaultValue: string = "''";
     typeRef!: TypeObj;
     isObject: boolean = false;
     isArray: boolean = false;
@@ -403,10 +403,7 @@ class TypeObj {
 }
 
 export type Result = {
-    code: String;
-    className: String;
+    code: string;
+    className: string;
 };
 
-
-
-export default JsonToDart;

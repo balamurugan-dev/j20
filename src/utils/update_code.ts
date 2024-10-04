@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as vscode from 'vscode';
+
 function _addVariableToState(path: string, varType: string, varName: string) {
 	// Read File
 	varType = getVarType(varType);

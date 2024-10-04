@@ -22,25 +22,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
-const j20_1 = __importDefault(require("./j20"));
+// import JsonToDart from './j20';
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const update_code_1 = require("./utils/update_code");
 const constants_1 = require("./utils/constants");
-let currentPanel = undefined;
+const json_to_dart_1 = require("./utils/jsonToDart/json_to_dart");
 function activate(context) {
     console.log(`-------extension is activated : --------`);
+    let currentPanel = undefined;
     let convertJSON = vscode.commands.registerCommand('json-to-dart.convertJSON', async () => {
         try {
             // Your command logic
-            vscode.window.showInformationMessage('JSON conversion started!');
+            vscode.window.showInformationMessage('JSON conversion IsReady dear');
             const columnToShowIn = vscode.window.activeTextEditor
                 ? vscode.window.activeTextEditor.viewColumn
                 : undefined;
@@ -54,7 +52,7 @@ function activate(context) {
                                 vscode.window.showErrorMessage("Please enter or past your json");
                                 return;
                             }
-                            var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
+                            var finalCode = await (0, json_to_dart_1.convertToDart)(undefined, undefined, e.text, e.object, e.className);
                             currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
                             break;
                         case 'copycode':
@@ -89,7 +87,7 @@ function activate(context) {
                                 vscode.window.showErrorMessage("Please enter or past your json");
                                 return;
                             }
-                            var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
+                            var finalCode = await (0, json_to_dart_1.convertToDart)(undefined, undefined, e.text, e.object, e.className);
                             currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
                             break;
                         case 'copycode':
@@ -103,6 +101,7 @@ function activate(context) {
             }
         }
         catch (error) {
+            console.error('Error in convertJSON command handler:', error);
             console.error(error); // Log the error
             vscode.window.showErrorMessage(`Error: ${error}`);
         }
@@ -110,79 +109,29 @@ function activate(context) {
     context.subscriptions.push(convertJSON);
     // add variables
     let createVariableInFreezed = vscode.commands.registerCommand('json-to-dart.addVariableInFreezed', async (args) => {
-        let nameFieldValidator = new RegExp(constants_1.NAME_REG_EXP);
-        var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"], { title: "Select Variable Type", canPickMany: false });
-        if (varType === undefined) {
-            return "No data";
+        console.log('createVariableInFreezed command handler called');
+        vscode.window.showInformationMessage('createVariableInFreezed command handler called');
+        try {
+            let nameFieldValidator = new RegExp(constants_1.NAME_REG_EXP);
+            var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"], { title: "Select Variable Type", canPickMany: false });
+            if (varType === undefined) {
+                return "No data";
+            }
+            let varName = await vscode.window.showInputBox({
+                title: "Enter Variable Name",
+                validateInput: (val) => nameFieldValidator.test(val) ? constants_1.NAME_ERROR_MESSAGE : '',
+            });
+            if (varName === undefined) {
+                return "No data";
+            }
+            (0, update_code_1.addVariableToState)(args.path, varType, varName);
         }
-        let varName = await vscode.window.showInputBox({
-            title: "Enter Variable Name",
-            validateInput: (val) => nameFieldValidator.test(val) ? constants_1.NAME_ERROR_MESSAGE : '',
-        });
-        if (varName === undefined) {
-            return "No data";
+        catch (error) {
+            console.error('Error in createVariableInFreezed command handler:', error);
         }
-        (0, update_code_1.addVariableToState)(args.path, varType, varName);
     });
     context.subscriptions.push(createVariableInFreezed);
 }
 function deactivate() {
-}
-class JsonToDartConfig {
-    outputFolder = "lib";
-    typeChecking = undefined;
-    nullValueDataType = "dynamic";
-    nullSafety = false;
-    copyWithMethod = false;
-    mergeArrayApproach = true;
-    checkNumberAsNum = false;
-}
-async function convertToDart(folder, file, json, object, className) {
-    const jsonToDartConfig = new JsonToDartConfig();
-    const typeCheck = object?.typecheck ?? false;
-    let useNum = jsonToDartConfig.checkNumberAsNum ?? false;
-    try {
-        // const data = await vscode.env.clipboard.readText();
-        const obj = JSON.parse(json ? json : {});
-        const nullSafety = object?.nullSafety || object?.optional ? true : false;
-        const mergeArrayApproach = jsonToDartConfig.mergeArrayApproach ?? false;
-        const copyWithMethod = object?.copywith ?? false;
-        const nullValueDataType = jsonToDartConfig.nullValueDataType;
-        const { tabSize } = vscode.workspace.getConfiguration("editor", { languageId: "dart" });
-        const converter = new j20_1.default(tabSize, typeCheck, nullValueDataType, nullSafety);
-        converter.setIncludeCopyWithMethod(copyWithMethod);
-        converter.setMergeArrayApproach(mergeArrayApproach);
-        converter.setUseNum(useNum);
-        converter.setRequiredProperty(object?.required ? object.required : false);
-        converter.setFinalProperty(object?.final ? object.final : false);
-        converter.putEnCoderAndDeCoder(object?.encoder ? object.encoder : false);
-        converter.setIncludeFreezedMethod(object?.freezed ? object.freezed : false);
-        converter.setIncludeOptionalMethod(object?.optional ? object.optional : false);
-        converter.setTypesOnlyCode(object?.typesonly ? object.typesonly : false);
-        var code = converter.parse(className ? className : "Json", obj).map(r => r.code).join("\n");
-        if (object?.typesonly == false && object?.encoder) {
-            code = `import 'dart:convert';\n` + code;
-        }
-        if (object?.freezed) {
-            code = `
-// Don't have packages for freezed ,add below packages
-// flutter pub add freezed_annotation
-// flutter pub add dev:build_runner
-// flutter pub add dev:freezed
-// # if using freezed to generate fromJson/toJson, also add:
-// flutter pub add json_annotation
-// flutter pub add dev:json_serializable
-// To run the code generator, execute the following command:
-// dart run build_runner build
-import 'package:freezed_annotation/freezed_annotation.dart';
-part '{your file name}.freezed.dart';
-part '{your file name}.g.dart';\n` + code;
-        }
-        return code;
-    }
-    catch (e) {
-        // console.log(`------inside catch function :${e} ---------`);
-        vscode.window.showErrorMessage(`${e}`);
-    }
 }
 //# sourceMappingURL=extension.js.map

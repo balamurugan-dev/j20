@@ -29,7 +29,7 @@ Refer the article to know about the extension.
 
 |                Add Variable to Freezed Class          |
 | :---------------------------------------------------: |
-| [![add_var_to_Freezed_gif][]][add_var_to_Freezed_gif]   |
+| [![add_var_to_Freezed_gif][]][add_var_to_Freezed_gif] |
 
 ## Special Words Explanations 
 

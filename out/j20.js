@@ -2,28 +2,41 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const camelcase = require('camelcase');
 class JsonToDart {
-    classNames = [];
-    classModels = [];
-    indentText;
-    shouldCheckType;
-    nullSafety;
-    includeCopyWitMethod = false;
-    includeFromListMethod = false;
-    includeFreezedMethod = false;
-    includeOptionalMethod = false;
-    makeRequiredProperty = false;
-    makeFinalProperty = false;
-    putEncoderDeCoder = false;
-    mergeArrayApproach = true;
-    typesOnly = false;
-    useNum = false;
-    nullValueDataType;
-    handlerSymbol;
     constructor(tabSize, shouldCheckType, nullValueDataType, nullSafety) {
+        this.classNames = [];
+        this.classModels = [];
+        this.includeCopyWitMethod = false;
+        this.includeFromListMethod = false;
+        this.includeFreezedMethod = false;
+        this.includeOptionalMethod = false;
+        this.makeRequiredProperty = false;
+        this.makeFinalProperty = false;
+        this.putEncoderDeCoder = false;
+        this.mergeArrayApproach = true;
+        this.typesOnly = false;
+        this.useNum = false;
+        this.removeEmptyArray = (obj) => Object.keys(obj)
+            .filter(key => !(Array.isArray(obj[key]) && obj[key].length === 0))
+            .reduce((res, key) => (Object.assign(Object.assign({}, res), { [key]: obj[key] })), {});
+        this.removeNull = (obj) => Object.keys(obj)
+            .filter(key => obj[key] !== null)
+            .reduce((res, key) => (Object.assign(Object.assign({}, res), { [key]: obj[key] })), {});
+        this.r = (type) => {
+            if (type.typeRef !== undefined) {
+                return `(e) => e == null?[]:(e as List).map(${this.r(type.typeRef)}).toList()`;
+            }
+            return `(e) => ${type.type}.fromJson(e)`;
+        };
+        this.p = (type) => {
+            if (type.typeRef !== undefined) {
+                return `(e) => e?.map(${this.p(type.typeRef)})?.toList() ?? []`;
+            }
+            return `(e) => e.toJson()`;
+        };
         this.indentText = " ".repeat(tabSize);
-        this.shouldCheckType = shouldCheckType ?? false;
-        this.nullValueDataType = nullValueDataType ?? "dynamic";
-        this.nullSafety = nullSafety ?? true;
+        this.shouldCheckType = shouldCheckType !== null && shouldCheckType !== void 0 ? shouldCheckType : false;
+        this.nullValueDataType = nullValueDataType !== null && nullValueDataType !== void 0 ? nullValueDataType : "dynamic";
+        this.nullSafety = nullSafety !== null && nullSafety !== void 0 ? nullSafety : true;
         this.handlerSymbol = nullSafety ? "?" : "";
     }
     setIncludeCopyWithMethod(b) {
@@ -148,12 +161,6 @@ class JsonToDart {
         });
         return mergedObject;
     }
-    removeEmptyArray = (obj) => Object.keys(obj)
-        .filter(key => !(Array.isArray(obj[key]) && obj[key].length === 0))
-        .reduce((res, key) => ({ ...res, [key]: obj[key] }), {});
-    removeNull = (obj) => Object.keys(obj)
-        .filter(key => obj[key] !== null)
-        .reduce((res, key) => ({ ...res, [key]: obj[key] }), {});
     formatType(type, handlerSymbol) {
         if (type === "dynamic") {
             return type;
@@ -174,10 +181,7 @@ class JsonToDart {
         if (json) {
             if (Array.isArray(json) && json.length > 0) {
                 json = this.mergeArrayApproach ? json.reduce((p, c) => {
-                    return {
-                        ...p,
-                        ...this.removeNull(c),
-                    };
+                    return Object.assign(Object.assign({}, p), this.removeNull(c));
                 }, {}) : json[0];
             }
             Object.entries(json).forEach(entry => {
@@ -264,18 +268,6 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
         }
         return className;
     }
-    r = (type) => {
-        if (type.typeRef !== undefined) {
-            return `(e) => e == null?[]:(e as List).map(${this.r(type.typeRef)}).toList()`;
-        }
-        return `(e) => ${type.type}.fromJson(e)`;
-    };
-    p = (type) => {
-        if (type.typeRef !== undefined) {
-            return `(e) => e?.map(${this.p(type.typeRef)})?.toList() ?? []`;
-        }
-        return `(e) => e.toJson()`;
-    };
     addFromJsonCode(key, typeObj, fromJsonCode) {
         const type = typeObj.type;
         const paramName = `${camelcase(key)}`;
@@ -358,13 +350,14 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
     }
 }
 class TypeObj {
-    type = "dynamic";
-    defaultValue = "''";
-    typeRef;
-    isObject = false;
-    isArray = false;
-    isPrimitive = false;
-    isNum = false;
+    constructor() {
+        this.type = "dynamic";
+        this.defaultValue = "''";
+        this.isObject = false;
+        this.isArray = false;
+        this.isPrimitive = false;
+        this.isNum = false;
+    }
 }
 exports.default = JsonToDart;
 //# sourceMappingURL=j20.js.map
