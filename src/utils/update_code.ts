@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-const _ = require('lodash');
 import * as vscode from 'vscode';
 function _addVariableToState(path: string, varType: string, varName: string) {
 	// Read File

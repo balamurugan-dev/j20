@@ -2,17 +2,17 @@
   "name": "j20",
   "displayName": "J2O - Json to Dart (freezed)",
   "description": "Json to Dart classes converter including freezed classes",
-  "version": "0.0.7",
+  "version": "0.0.11",
   "publisher": "BalaDhruv",
   "author": {
     "name": "Balamurugan",
     "email": "androbalamail@gmail.com",
     "url": "https://balamurugan.dev/"
   },
-  "homepage": "https://github.com/balamurugan-dev/j20/tree/master",
+  "homepage": "https://github.com/balamurugan-dev/j20/tree/main",
   "repository": {
     "type": "git",
-    "url": "https://github.com/balamurugan-dev/j20/tree/master"
+    "url": "https://github.com/balamurugan-dev/j20/tree/main"
   },
   "bugs": {
     "url": "https://github.com/balamurugan-dev/j20/issues"
@@ -25,24 +25,24 @@
     "json"
   ],
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.60.0"
   },
   "categories": [
     "Other"
   ],
   "activationEvents": [
-
+  
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "json-to-dart",
+        "command": "json-to-dart.convertJSON",
         "title": "JSON to DART",
         "category": "J2O"
       },
       {
-        "command": "freezed-add-variables",
+        "command": "json-to-dart.addVariableInFreezed",
         "title": "Add Variable in Freezed Class",
         "category": "J2O"
       }
@@ -50,13 +50,13 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "freezed-add-variables",
+          "command": "json-to-dart.addVariableInFreezed",
           "when": "false"
         }
       ],
       "editor/context": [
         {
-          "command": "freezed-add-variables",
+          "command": "json-to-dart.addVariableInFreezed",
           "group": "J2O@1"
         }
       ]
@@ -72,10 +72,9 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/lodash": "^4.17.7",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
-    "@types/vscode": "^1.92.0",
+    "@types/vscode": "^1.60.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
     "@vscode/test-cli": "^0.0.9",
@@ -84,7 +83,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "fs-extra": "^11.2.0",
-    "lodash": "^4.17.21"
+    "fs-extra": "^11.2.0"
   }
 }

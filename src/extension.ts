@@ -3,18 +3,21 @@ import * as vscode from 'vscode';
 import JsonToDart from './j20';
 import * as fs from 'fs';
 import * as path from 'path';
-const camelcase = require('camelcase');
 import { addVariableToState } from './utils/update_code';
-import { NAME_ERROR_MESSAGE, NAME_REG_EXP, VARIABLE_NAME_ERROR_MESSAGE, NO_FOLDER_IN_WORKSPACE_FOUND, SUCCESFULLY_SET_PARENT } from './utils/constants';
+import { NAME_ERROR_MESSAGE, NAME_REG_EXP } from './utils/constants';
 
 
 
 
 let currentPanel: vscode.WebviewPanel | undefined = undefined;
 
-export async function activate(context: vscode.ExtensionContext) {
-//   console.log(`-------extension is activated : --------`);
-    const disposable = vscode.commands.registerCommand('json-to-dart', async () => {  
+export function activate(context: vscode.ExtensionContext) {
+    console.log(`-------extension is activated : --------`);
+    let convertJSON = vscode.commands.registerCommand('json-to-dart.convertJSON', async () => {
+        try {
+            // Your command logic
+            vscode.window.showInformationMessage('JSON conversion started!');
+       
         const columnToShowIn = vscode.window.activeTextEditor
             ? vscode.window.activeTextEditor.viewColumn
             : undefined;
@@ -96,32 +99,38 @@ export async function activate(context: vscode.ExtensionContext) {
                 context.subscriptions
             );
         }
+    } catch (error) {
+        console.error(error); // Log the error
+        vscode.window.showErrorMessage(`Error: ${error}`);
+    }
     });
 
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(convertJSON);
 
     // add variables
-    let createVariableInState = vscode.commands.registerCommand('freezed-add-variables', async (args) => {
-		let nameFieldValidator = new RegExp(NAME_REG_EXP);
-		var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"],
-			{ title: "Select Variable Type", canPickMany: false });
-		if (varType === undefined) {
-			return "No data";
-		}
-		let varName = await vscode.window.showInputBox({
-			title: "Enter Variable Name",
-			validateInput: (val) => nameFieldValidator.test(val) ? NAME_ERROR_MESSAGE : '',
-		});
-		if (varName === undefined) {
-			return "No data";
-		}
-		addVariableToState(args.path, varType, varName);
-	});
+    let createVariableInFreezed = vscode.commands.registerCommand('json-to-dart.addVariableInFreezed', async (args) => {
+        let nameFieldValidator = new RegExp(NAME_REG_EXP);
+        var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"],
+            { title: "Select Variable Type", canPickMany: false });
+        if (varType === undefined) {
+            return "No data";
+        }
+        let varName = await vscode.window.showInputBox({
+            title: "Enter Variable Name",
+            validateInput: (val) => nameFieldValidator.test(val) ? NAME_ERROR_MESSAGE : '',
+        });
+        if (varName === undefined) {
+            return "No data";
+        }
+        addVariableToState(args.path, varType, varName);
+    });
 
-	context.subscriptions.push(createVariableInState);
+    context.subscriptions.push(createVariableInFreezed);
 }
-export function deactivate() { }
+export function deactivate() {
+
+}
 class JsonToDartConfig {
     outputFolder: String = "lib";
     typeChecking: boolean | undefined = undefined;
@@ -150,7 +159,7 @@ async function convertToDart(folder?: string, file?: string, json?: any, object?
     try {
         // const data = await vscode.env.clipboard.readText();
         const obj = JSON.parse(json ? json : {});
-        const nullSafety = object?.nullSafety || object?.optional ? true : false ;
+        const nullSafety = object?.nullSafety || object?.optional ? true : false;
         const mergeArrayApproach = jsonToDartConfig.mergeArrayApproach ?? false;
         const copyWithMethod = object?.copywith ?? false;
         const nullValueDataType = jsonToDartConfig.nullValueDataType;

@@ -32,77 +32,84 @@ const vscode = __importStar(require("vscode"));
 const j20_1 = __importDefault(require("./j20"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const camelcase = require('camelcase');
 const update_code_1 = require("./utils/update_code");
 const constants_1 = require("./utils/constants");
 let currentPanel = undefined;
-async function activate(context) {
-    //   console.log(`-------extension is activated : --------`);
-    const disposable = vscode.commands.registerCommand('json-to-dart', async () => {
-        const columnToShowIn = vscode.window.activeTextEditor
-            ? vscode.window.activeTextEditor.viewColumn
-            : undefined;
-        if (currentPanel) {
-            currentPanel.reveal(columnToShowIn);
-            currentPanel.webview.onDidReceiveMessage(async (e) => {
-                switch (e.command) {
-                    case 'j20':
-                        // console.log(`-------on did receive j20 : ${e.text}--------`);
-                        if (e.text === "" || null) {
-                            vscode.window.showErrorMessage("Please enter or past your json");
-                            return;
-                        }
-                        var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
-                        currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
-                        break;
-                    case 'copycode':
-                        vscode.window.showInformationMessage("Code is Copied");
-                        break;
-                }
-            });
+function activate(context) {
+    console.log(`-------extension is activated : --------`);
+    let convertJSON = vscode.commands.registerCommand('json-to-dart.convertJSON', async () => {
+        try {
+            // Your command logic
+            vscode.window.showInformationMessage('JSON conversion started!');
+            const columnToShowIn = vscode.window.activeTextEditor
+                ? vscode.window.activeTextEditor.viewColumn
+                : undefined;
+            if (currentPanel) {
+                currentPanel.reveal(columnToShowIn);
+                currentPanel.webview.onDidReceiveMessage(async (e) => {
+                    switch (e.command) {
+                        case 'j20':
+                            // console.log(`-------on did receive j20 : ${e.text}--------`);
+                            if (e.text === "" || null) {
+                                vscode.window.showErrorMessage("Please enter or past your json");
+                                return;
+                            }
+                            var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
+                            currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
+                            break;
+                        case 'copycode':
+                            vscode.window.showInformationMessage("Code is Copied");
+                            break;
+                    }
+                });
+            }
+            else {
+                currentPanel = vscode.window.createWebviewPanel('j20', 'JSON INPUT', columnToShowIn || vscode.ViewColumn.One, {
+                    enableScripts: true,
+                    localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'media'))],
+                    retainContextWhenHidden: true
+                });
+                const htmlPath = path.join(context.extensionPath, 'media', 'index.html');
+                // Get the URI for the CSS file
+                const styleUri = currentPanel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'media', 'style.css')));
+                //Get The Uri for Script file 
+                const scriptUri = currentPanel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'media', 'script.js')));
+                let html = fs.readFileSync(htmlPath, 'utf8');
+                // console.log(`-------on html path messsage : ${htmlPath}--------`);
+                // console.log(`-------on html list : ${html.split('/n')}--------`);
+                html = html.replace('{{styleUri}}', styleUri.toString());
+                html = html.replace('{{scriptUri}}', scriptUri.toString());
+                currentPanel.webview.html = html;
+                currentPanel.webview.onDidReceiveMessage(async (e) => {
+                    // console.log(`-------on did receive messsage : ${e.text}--------`);
+                    // console.log(`-------on did receive messsage :e.type ${e.command}--------`);
+                    switch (e.command) {
+                        case 'j20':
+                            if (e.text === "" || null) {
+                                vscode.window.showErrorMessage("Please enter or past your json");
+                                return;
+                            }
+                            var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
+                            currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
+                            break;
+                        case 'copycode':
+                            vscode.window.showInformationMessage("Code is Copied");
+                            break;
+                    }
+                });
+                currentPanel.onDidDispose(() => {
+                    currentPanel = undefined;
+                }, null, context.subscriptions);
+            }
         }
-        else {
-            currentPanel = vscode.window.createWebviewPanel('j20', 'JSON INPUT', columnToShowIn || vscode.ViewColumn.One, {
-                enableScripts: true,
-                localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'media'))],
-                retainContextWhenHidden: true
-            });
-            const htmlPath = path.join(context.extensionPath, 'media', 'index.html');
-            // Get the URI for the CSS file
-            const styleUri = currentPanel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'media', 'style.css')));
-            //Get The Uri for Script file 
-            const scriptUri = currentPanel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, 'media', 'script.js')));
-            let html = fs.readFileSync(htmlPath, 'utf8');
-            // console.log(`-------on html path messsage : ${htmlPath}--------`);
-            // console.log(`-------on html list : ${html.split('/n')}--------`);
-            html = html.replace('{{styleUri}}', styleUri.toString());
-            html = html.replace('{{scriptUri}}', scriptUri.toString());
-            currentPanel.webview.html = html;
-            currentPanel.webview.onDidReceiveMessage(async (e) => {
-                // console.log(`-------on did receive messsage : ${e.text}--------`);
-                // console.log(`-------on did receive messsage :e.type ${e.command}--------`);
-                switch (e.command) {
-                    case 'j20':
-                        if (e.text === "" || null) {
-                            vscode.window.showErrorMessage("Please enter or past your json");
-                            return;
-                        }
-                        var finalCode = await convertToDart(undefined, undefined, e.text, e.object, e.className);
-                        currentPanel.webview.postMessage({ command: 'j20', code: finalCode });
-                        break;
-                    case 'copycode':
-                        vscode.window.showInformationMessage("Code is Copied");
-                        break;
-                }
-            });
-            currentPanel.onDidDispose(() => {
-                currentPanel = undefined;
-            }, null, context.subscriptions);
+        catch (error) {
+            console.error(error); // Log the error
+            vscode.window.showErrorMessage(`Error: ${error}`);
         }
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(convertJSON);
     // add variables
-    let createVariableInState = vscode.commands.registerCommand('freezed-add-variables', async (args) => {
+    let createVariableInFreezed = vscode.commands.registerCommand('json-to-dart.addVariableInFreezed', async (args) => {
         let nameFieldValidator = new RegExp(constants_1.NAME_REG_EXP);
         var varType = await vscode.window.showQuickPick(["Number", "Int", "Double", "String", "Bool", "List", "Set", "Map", "Dynamic"], { title: "Select Variable Type", canPickMany: false });
         if (varType === undefined) {
@@ -117,9 +124,10 @@ async function activate(context) {
         }
         (0, update_code_1.addVariableToState)(args.path, varType, varName);
     });
-    context.subscriptions.push(createVariableInState);
+    context.subscriptions.push(createVariableInFreezed);
 }
-function deactivate() { }
+function deactivate() {
+}
 class JsonToDartConfig {
     outputFolder = "lib";
     typeChecking = undefined;
