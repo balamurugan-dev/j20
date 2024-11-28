@@ -18,6 +18,7 @@ export default class JsonToDart {
     useNum: boolean = false;
     nullValueDataType: string;
     handlerSymbol: string;
+    hashEqual: boolean = false;
     constructor(tabSize: number, shouldCheckType?: boolean, nullValueDataType?: string, nullSafety?: boolean) {
         this.indentText = " ".repeat(tabSize);
         this.shouldCheckType = shouldCheckType ?? false;
@@ -55,6 +56,9 @@ export default class JsonToDart {
     }
     setTypesOnlyCode(b: boolean) {
         this.typesOnly = b;
+    }
+    setHashEqualMethod(b: boolean) {
+        this.hashEqual = b;
     }
 
 
@@ -96,7 +100,7 @@ export default class JsonToDart {
             } else {
 
                 temp = this.mergeArrayApproach ?
-                 this.merchList(temp): temp[0];
+                    this.merchList(temp) : temp[0];
 
                 var newKey = key;
                 if (key.endsWith('s')) {
@@ -115,37 +119,37 @@ export default class JsonToDart {
         typeObj.type = type;
         return typeObj;
     }
-    merchList  (list:any[]) : any {
-       const mergedObject =  list.reduce((p, c) => {
+    merchList(list: any[]): any {
+        const mergedObject = list.reduce((p, c) => {
             Object.keys(c).forEach((key: string) => {
-              const value = c[key];
-              const existingValue = p[key];
-          
-              if (value === null) {
-                if (existingValue !== undefined && existingValue !== null) return;
-                p[key] = null;
-              } else if (Array.isArray(value)) {
-                if (Array.isArray(existingValue)) {
-                  p[key] = [...existingValue, ...value].filter(v => v !== undefined && v !== null);
-                } else {
-                  p[key] = value;
+                const value = c[key];
+                const existingValue = p[key];
+
+                if (value === null) {
+                    if (existingValue !== undefined && existingValue !== null) return;
+                    p[key] = null;
+                } else if (Array.isArray(value)) {
+                    if (Array.isArray(existingValue)) {
+                        p[key] = [...existingValue, ...value].filter(v => v !== undefined && v !== null);
+                    } else {
+                        p[key] = value;
+                    }
+                } else if (value !== null) {
+                    p[key] = value;
                 }
-              } else if (value !== null) {
-                p[key] = value;
-              }
             });
-          
+
             return p;
-          }, {});
-          
-          Object.keys(mergedObject).forEach((key: string) => {
+        }, {});
+
+        Object.keys(mergedObject).forEach((key: string) => {
             if (Array.isArray(mergedObject[key]) && mergedObject[key].length === 0) {
-              mergedObject[key] = []; 
+                mergedObject[key] = [];
             } else if (mergedObject[key] === null) {
-              mergedObject[key] = null;
+                mergedObject[key] = null;
             }
-          });
-          return mergedObject;
+        });
+        return mergedObject;
 
     }
 
@@ -172,6 +176,8 @@ export default class JsonToDart {
         const constructorInit: string[] = [];
         const copyWithAssign: string[] = [];
         const freezedConstructorCodes: string[] = [];
+        const hashcodeCode: string[] = [];
+        const equalOperatorCode: string[] = [];
         // const typesOnlyCodes : String[]=[];
         if (json) {
             if (Array.isArray(json) && json.length > 0) {
@@ -198,9 +204,28 @@ export default class JsonToDart {
                     copyWithAssign.push(`${this.indent(2)}${paramName}: ${paramName} ?? this.${paramName}`);
                 }
                 constructorInit.push(`${this.makeRequiredProperty ? 'required' : ''} this.${paramName}`);
-                freezedConstructorCodes.push(this.toMethodParams(2, `${this.makeRequiredProperty ? 'required' : ''}`, this.makeRequiredProperty ? typeObj.type : this.formatType(typeObj.type,'?'), paramName));
+                freezedConstructorCodes.push(this.toMethodParams(2, `${this.makeRequiredProperty ? 'required' : ''}`, this.makeRequiredProperty ? typeObj.type : this.formatType(typeObj.type, '?'), paramName));
+                equalOperatorCode.push(this.toCondition(5, `&& ${paramName} == other.${paramName}`));
+                hashcodeCode.push(this.toCondition(5, `^ ${paramName}.hashCode`));
+
             });
         }
+        const hashEqualCode = `
+${this.indent(1)}@override
+${this.indent(1)}bool operator ==(other) =>
+${this.indent(3)}identical(this, other) ||
+${this.indent(3)}other is ${className} &&
+${this.indent(5)}runtimeType == other.runtimeType
+${equalOperatorCode.join('\n')}
+;
+
+${this.indent(1)}@override
+${this.indent(1)}int get hashCode =>
+${this.indent(3)}super.hashCode ^
+${this.indent(3)}runtimeType.hashCode
+${hashcodeCode.join('\n')}
+;
+`;
 
         const fromListCode = this.includeFromListMethod ?
             `
@@ -251,11 +276,13 @@ ${this.indent(1)}}
 ${fromListCode}
 ${encoderAndDecoderCode}
 ${this.indent(1)}Map<String, dynamic> toJson() {
-${this.indent(2)}final Map<String, dynamic> _data = <String, dynamic>{};
+${this.indent(2)}final Map<String, dynamic> data = <String, dynamic>{};
 ${toJsonCode.join("\n")}
-${this.indent(2)}return _data;
+${this.indent(2)}return data;
 ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
+${this.indent(1)}${this.hashEqual ? hashEqualCode : ""}
 }`;
+
         this.addClass(className, this.includeFreezedMethod ? freezedCode : this.typesOnly ? typesOnlyCode : code);
 
         return this.classModels;
@@ -349,7 +376,7 @@ ${this.indent(1)}}${this.includeCopyWitMethod ? copyWithCode : ""}
 
     addToJsonCode(key: string, typeObj: TypeObj, fromJsonCode: Array<string>) {
         const paramName = `${getFormattedTypeName(key)}`;
-        const paramCode = `_data["${key}"]`;
+        const paramCode = `data["${key}"]`;
         if (typeObj.isObject) {
             fromJsonCode.push(this.toCondition(2, `if(${paramName} != null) {`));
             fromJsonCode.push(this.toCode(3,

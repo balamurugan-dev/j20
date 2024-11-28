@@ -14,6 +14,7 @@ interface options {
     nullSafety: boolean,
     typesonly: boolean,
     typecheck: boolean,
+    hashEqual: boolean,
     encoder: boolean,
     required: boolean,
     final: boolean,
@@ -43,6 +44,7 @@ async function _convertToDart(folder?: string, file?: string, json?: any, object
         converter.setIncludeFreezedMethod(object?.freezed ? object.freezed : false);
         converter.setIncludeOptionalMethod(object?.optional ? object.optional : false);
         converter.setTypesOnlyCode(object?.typesonly ? object.typesonly : false);
+        converter.setHashEqualMethod(object?.hashEqual ? object.hashEqual : false);
         var code = converter.parse(className ? className : "Json", obj).map(r => r.code).join("\n");
         if (object?.typesonly == false && object?.encoder) {
             code = `import 'dart:convert';\n` + code;

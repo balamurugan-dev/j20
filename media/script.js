@@ -66,7 +66,11 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById("types-only").addEventListener("change", function () {
         convertCode();
     });
+   
     document.getElementById("type-check").addEventListener("change", function () {
+        convertCode();
+    });
+    document.getElementById("hash-equal").addEventListener("change", function () {
         convertCode();
     });
     document.getElementById("encoder-decoder").addEventListener("change", function () {
@@ -94,6 +98,7 @@ className.addEventListener('input',convertCode);
             nullSafety: document.getElementById('null-safety').checked,
             typesonly: document.getElementById('types-only').checked,
             typecheck: document.getElementById('type-check').checked,
+            hashEqual: document.getElementById('hash-equal').checked,
             encoder: document.getElementById('encoder-decoder').checked,
             required: document.getElementById('pro-required').checked,
             final: document.getElementById('pro-final').checked,
